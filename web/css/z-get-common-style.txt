@@ -1,0 +1,6 @@
+grid.css : .w-grid-toolbar
+
+custom.css:.w-layouts-tabs li.ui-tabs-selected a{ background: url("../images/new/tab_bg_new.jpg");border-radius:4 !important;
+
+
+html.ui.css  .html-ui-dialog{ 

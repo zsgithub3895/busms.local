@@ -1,0 +1,19 @@
+<div id="layouts-1-3" style="width:100%; height:100%; z-index:1">
+	<div id="west" class="ui-layout-west" ></div>
+	<div id="east" class="ui-layout-east" ></div>
+	<div id="center" class="ui-layout-center"></div>
+</div>
+
+<script language="javascript">
+var layout = W.$("layouts-1-3").node.layout({
+	west__showOverflowOnHover : true,
+	closable : true ,
+	resizable : true ,
+	slidable : true ,	
+	west__minSize : 212,
+	east__size : 300,
+	east__minSize : 200,
+	east__maxSize : Math.floor(screen.availWidth / 2)
+});
+W.on("open",function(e){e.stopPropagation();});
+</script>

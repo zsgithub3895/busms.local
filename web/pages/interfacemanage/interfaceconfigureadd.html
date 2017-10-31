@@ -1,0 +1,185 @@
+<#ftl>
+<!-- @meta var="id" title="接口信息" icon="images/icon/icon_16_network.png" height="555"-->
+<form id="superInterfaceForm" data-form="title:接口信息;column:1">
+	<#if id>
+	<input id="id" name="id" type="hidden" />
+	<label>接口名称：</label>
+	<input id="name" name="name" class="w-required" type="text" maxlength="64" data-validate-exp="not_char['!@#$%^&*(),.<>?;:[]{}\'/+-_']" />
+	<label>接口代码：</label>
+	<input id="code" name="code" type="text" maxlength="64" data-validator="message:接口编号不能是中文且编码唯一;method:validate_updatecode;" class="w-required" readonly="readonly" />
+	<label>业务平台：</label>
+	<select id="businessPlatform" name="businessPlatform" data-select="resource:lookup/businessPlatformEnum"></select>
+	<label>接口类型：</label>
+	<select id="type" name="type" data-select="resource:lookup/interfaceVarityEnum"></select>
+	<label>所属地市：</label>
+	<select id="cityCode" name="cityCode" data-select="resource:lookup/cityCode" disabled="disabled"></select>
+	<label>监控分组：</label>
+	<select id="monitorGroup" name="monitorGroup" data-select="resource:lookup/monitorGroupSelect"></select>
+	<label>接口请求样例：</label>
+	<textarea rows="3" cols="20" id="requestExam" name="requestExam" data-validate-exp="not_empty+len[0,2000]" class="w-required"></textarea>
+	<label>访问接口地址：</label>
+	<input id=url name="url" type="text" class="w-required" data-validate-exp="not_empty+url+len[0,200]" placeholder="输入的URL需符合http:// 或者 rtsp:// 格式" />
+	<label>访问接口方式：</label>
+	<select id="protocol" name="protocol" data-select="resource:lookup/accessInterfaceExpression"></select>
+	<label>接口绑定验证策略：</label>
+	<select id="strategyCode" name="strategyCode" data-select="resource:lookup/strategycode"></select>
+	<label>接口绑定定时任务：</label>
+	<select id="tasklist" name="taskId"></select>
+	<label>延迟阀值：</label>
+    <input id=delayThreshold name="delayThreshold" type="text" data-validate-exp="number" placeholder="请输入数字，0表示无阈值" />
+	<input type="submit" value="更新" data-href="W.$('superInterfaceForm').validate()->superInterfaceForm,date|call(updateHandler,superInterfaceForm)->close()" />
+	<input type="submit" value="返回" data-href="close()" />
+</form>
+<#else>
+<input id="id" name="id" type="hidden" />
+<label>接口名称：</label>
+<input id="name" name="name" type="text"  class="w-required" maxlength="64" data-validate-exp="not_char['!@#$%^&*(),.<>?;:[]{}\'/+-_']"
+	 />
+<label>接口代码：</label>
+<input id="code" name="code" type="text"  class="w-required" maxlength="64" data-validator="message:接口编号不能是中文且编码唯一;method:validate_code;"/>
+<label>业务平台：</label>
+<select id="businessPlatform" name="businessPlatform" data-select="resource:lookup/businessPlatformEnum"  data-validator="method:validate_bussinessType"></select>
+<label>接口类型：</label>
+<select id="type" name="type"  
+	data-select="resource:lookup/interfaceVarityEnum" data-validator="method:validate_bussinessType;"></select>
+<label>所属地市：</label>
+<select id="cityCode" name="cityCode"
+	data-select="resource:lookup/cityCode" disabled="disabled">
+</select>
+<label>监控分组：</label>
+	<select id="monitorGroup" name="monitorGroup" data-select="resource:lookup/monitorGroupSelect" data-validator="method:validate_group;"></select>
+<label>接口请求样例：</label>
+<textarea rows="3" cols="20" id="requestExam" name="requestExam" class="w-required" data-validate-exp="not_empty+len[0,2000]"
+	 data-validate-exp="not_empty"></textarea>
+<label>访问接口地址：</label>
+<input id=url name="url" type="text"  
+	data-validate-exp="not_empty+url+len[0,200]"   class="w-required" placeholder="输入的URL需符合http:// 或者 rtsp:// 格式" />
+<label>访问接口方式：</label>
+<select id="protocol" name="protocol"
+	data-select="resource:lookup/accessInterfaceExpression"></select>
+<label>接口绑定验证策略：</label>
+<select id="strategyCode" name="strategyCode"
+	data-select="resource:lookup/strategycode"></select>
+<label>接口绑定定时任务：</label>
+<select id="tasklist" name="taskId"></select>
+<label>延迟阀值(ms)：</label>
+<input id=delayThreshold name="delayThreshold" type="text" data-validate-exp="number" placeholder="请输入数字，0表示无阈值" />
+<input type="submit" value="新建" data-href="W.$('superInterfaceForm').validate()-> superInterfaceForm|call(saveHandler,superInterfaceForm) -> close()"
+ />
+ <input type="submit" value="返回" data-href="close()" />
+</form>
+</#if>
+<script>
+	W.get('taskService/all').done(function(result) {
+	    if (result) {
+	        W.$('tasklist').options(result, 'cronDesc', 'id');
+	    } else {
+	        var tasklist = {};
+	        tasklist.push({
+	            'cronDesc' : '暂无',
+	            'id' : '-1'
+	        });
+	        W.$('tasklist').options(tasklist, 'cronDesc', 'id');
+	    }
+	    if (id) {
+	        W.get('interfaceConfigManageService/id?id=' + id).done(function(message) {
+	            W.$('superInterfaceForm').data(message);
+	        });
+	    }
+	});
+
+	var saveHandler = function(superInterfaceForm) {
+		W.create('interfaceConfigManageService', superInterfaceForm).done(function(callBackValue) {
+			W.alert(callBackValue);
+		});
+	}
+
+	var updateHandler = function(superInterfaceForm) {
+		W.update('interfaceConfigManageService', superInterfaceForm).done(
+				function(callBackValue) {
+					W.alert(callBackValue);
+				});
+	}
+
+	W.get("ngUser/currentuser").done(function(cityCode) {
+
+		if (cityCode == 0) {
+			W.$("cityCode").removeAttr("disabled")
+		} else {
+			W.$("cityCode").data(cityCode);
+		}
+	});
+
+	var isChinese = function(s){//是否为中文
+	    var re = /[\u4e00-\u9fa5]/ ;  
+	    return re.test(s)  
+	} 
+
+	function checkStr(str){
+	    var SpecialCharacters = "'!@#$%^&*\'/'";
+	    for(var i=0;i<SpecialCharacters.length-1;i++){
+	        if(str.indexOf(SpecialCharacters[i]) != -1){
+	            return true;
+	        }
+	    }
+	    return false;
+	}
+	var validate_updatecode = function(value,continuation){
+		if(isChinese(value)){
+			W.alert("编码CODE不能包含中文！");
+			return;
+		}
+	
+		W.get('interfaceConfigManageService/updateCode?id='+id+'&code='+encodeURIComponent(value)).done(function(result) {
+			if(result){
+				continuation(result);
+				}
+			else{
+				continuation("接口CODE必须唯一且不能为空");
+				} 
+			}); 
+		}
+		
+		
+	var validate_code = function(value,continuation){
+		if(isChinese(value)){
+			W.alert("编码CODE不能包含中文！");
+			return;
+		}
+		if(checkStr(value)){
+			W.alert("编码中不能包含特殊字符！");
+			return;
+		}
+			W.get('interfaceConfigManageService/add?code='+encodeURIComponent(value)).done(function(result) {
+				if(result){
+					continuation(result);
+					}
+				else{
+					continuation("接口CODE必须唯一且不能为空");
+					} }); 
+			}
+	
+	var validate_interfaceType=function(value){
+		if(null==value){
+			W.alert("接口类型不能为空，请在枚举值管理中配置！");
+			return false;
+		}
+		return true;
+	}
+	
+	var validate_bussinessType=function(value){
+		if(null==value){
+			W.alert("平台类型不能为空，请在枚举值管理中配置！");
+			return false;
+		}
+		return true;
+	}
+	
+	var validate_group=function(value){
+		if(null==value){
+			W.alert("监控分组不能为空，请在枚举值管理中配置！");
+			return false;
+		}
+		return true;
+	}
+</script>

@@ -1,0 +1,6 @@
+/* CSS Document */
+.w-accordion{}
+.w-accordion-title{ padding:5px; cursor:pointer;}
+.w-accordion-panel{ display:none;}
+
+.w-accordion>h3 a{ padding:.2em !important; padding-left:1em !important;}

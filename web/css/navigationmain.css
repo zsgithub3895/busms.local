@@ -1,0 +1,55 @@
+@charset "utf-8";
+/* CSS Document */
+*{ margin:0; padding:0; font-family:微软雅黑;}
+body{ background:#ecf0f1;}
+/* header */
+.navigation-header{ width:100%; height:60px; background:#2c3e50;}
+
+.statebar{ height:40px; line-height:30px; z-index:10000; background:#34495e; position: relative;}
+
+.w-grid .w-grid-toolbar{ height: 36px; line-height:36px;background:#9ba1a5; color:#fff;}
+
+.w-layouts-tabs li.ui-tabs-selected a{ background:#9ba1a5;border-radius:4 !important;
+	border-bottom-left-radius: 0px !important; border-bottom-right-radius: 0px !important;
+	color:#fff; font-weight: bold; border:1px solid #b6d9fb; height:22px; line-height: 19px;}
+
+.html-ui-dialog{ 
+	background:#9ba1a5;
+	border:1px solid #1f2020; 
+	-moz-box-shadow:0px 0px 2px #000 ;               /* For Firefox3.6+ */
+	-webkit-box-shadow:0px 0px 2px #000 ;           /* For Chrome5+, Safari5+ */
+	box-shadow:0px 0px 2px #000 ;               /* For Latest Opera */	
+	-moz-border-radius: 6px/*{cornerRadius}*/;
+	-webkit-border-radius: 6px/*{cornerRadius}*/; 
+	border-radius: 6px/*{cornerRadius}*/;
+	position:absolute;
+	font-size:12px;
+	font-family:"微软雅黑";	
+	min-height:100px; min-width:100px;
+	overflow: hidden;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

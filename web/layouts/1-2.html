@@ -1,0 +1,41 @@
+<!-- @meta var="options" icon="images/icon/icon_16_computer.png" unique="true" -->
+<style>
+.ui-layout-north{ overflow:hidden; border:none !important;}
+.ui-layout-pane{ border:1px solid #CEDFE9;}
+.ui-layout-resizer-north{ display:none !important;}
+</style>
+<div id="layouts-1-2" style="width:100%; height:100%; z-index:1">
+<div id="west" class="ui-layout-west" ></div>
+<div id="center" class="ui-layout-center">
+	
+</div>
+</div>
+<script language="javascript">
+W.$("layouts-1-2").node.layout({
+	//	enable showOverflow on west-pane so CSS popups will overlap north pane
+	west__showOverflowOnHover : true
+
+	//	reference only - these options are NOT required because 'true' is the default
+	,
+	closable : true // pane can open & close
+	,
+	resizable : true // when open, pane can be resized 
+	,
+	slidable : true // when closed, pane can 'slide' open over other panes - closes on mouse-out
+
+	//	some resizing/toggling settings
+	,	
+	west__minSize : 212
+	// 1/2 screen width
+});
+W.$("west").load("layouts/tabs", { tabs: options.left.split(','), data: options.data });
+W.$("center").load(options.center);
+
+W.on("layouts-1-2:open",'public',function(e,page){
+	var args = Array.prototype.slice.call(arguments,1);
+	W.$("center").inner().open(args);
+});
+W.on("open",function(e,url){
+	e.stopPropagation();
+});
+</script>

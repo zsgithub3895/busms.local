@@ -1,0 +1,57 @@
+<#ftl>
+<!-- @meta title="系统配置管理" icon="images/icon/icon_16_network.png" -->
+<form id="systemConfigForm" data-form="column:2;">
+  <label>属性名称</label>
+  <input name="key" type="text" />
+  <label>属性值</label>
+  <input name="value" type="text" />  
+  <input type="submit" value="查询" class="w-form-query" />
+  <input type="submit" value="重置" class="w-form-clear" />
+</form>					
+<div id="sysConfigGrid" class="w-grid">		
+	<!-- button data-icon="circle-plus" data-href="open('systemconfig/systemConfigEdit')">新建</button>-->
+	<table style="width:100%">
+		<thead>
+			<tr>
+				<th width="5%" class="w-grid-select"></th>
+				<th width="3%" class="w-grid-index">序号</th>
+				<th width="20%">名称</th>
+				<th width="30%">属性值</th>
+				<th width="42%">描述</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><input type="hidden" name="id"/></td>
+				<td></td>												
+				<td><a name="key" data-href="popup('systemconfig/systemConfigEdit',row.data().id,row.data().key)" /></td>
+				<td name="value"></td>
+				<td name="description" ></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<script>
+	
+	W.$('sysConfigGrid').grid.refresh()
+	W.$('sysConfigGrid').on('grid:refresh',function(e,query_data,paginator) {
+		W.get('systemConfig?'+W.param(query_data)+'&pageBean='+paginator).done(function(data) {
+			W.$('sysConfigGrid').data(data);
+		});
+	});
+																																										
+	W.$('sysConfigGrid').on('remove')
+	W.on('systemConfig:remove', 'public', function(){
+		W.$('sysConfigGrid').grid.refresh();
+	});
+	
+	W.on('sysConfigGrid:refresh','public',function(){
+	  W.$('sysConfigGrid').grid.refresh();
+	});
+	
+	W.on([/systemConfig:update/],'public',function(){
+		W.$('sysConfigGrid').grid.refresh();
+	});
+	
+</script>
+ 

@@ -1,0 +1,35 @@
+<!-- @meta title="系统管理" var="node" close="false" desc="系统管理" unique="true" icon="images/icons/content.png" -->
+<div style="background:#fff; position:absolute; top:0px; right:0px; bottom:0px; left:0px; " >
+	<div id="systemManageMenuTree" class="w-tree" data-tree="resource1:menu/150;"></div>
+</div>
+<script>
+var menuUrlMapping = {};
+W.get("menu/150").done(function(menu){
+	 var children = [menu];
+	 // 隐藏用户组
+	 for (i in menu.children) {
+		 if (menu.children[i].id == 'security') {
+			 for (j in menu.children[i].children) {
+				 if (menu.children[i].children[j].id == 'security/user-group') {
+					 menu.children[i].children.splice(j,1);
+					 break;
+				 }
+			 }
+			 break;
+		 }
+	 }
+	 while(children.length > 0){
+		 var m = children.pop();
+		 menuUrlMapping["id"+m.id] = m.url;
+		 if(m.children)
+		 	$.merge( children, m.children );
+	 }
+	 var treeResource = W.tree.Resource(menu.children);
+	 W.$('systemManageMenuTree').tree.resource(treeResource);
+});
+W.$('systemManageMenuTree').on("tree:select",'private',function(e,node){
+	var url = menuUrlMapping['id'+node.id()];													  	
+	if(url)
+		W.fire("layouts-1-2:open",url);
+});
+</script>

@@ -1,0 +1,134 @@
+<!-- @meta title="定时任务管理"-->
+<div id="taskSearch"  style="margin-left:10px;margin-right:10px" >
+<form id="searchForm" style="margin:4px 5px">
+ <fieldset data-fieldset="column:1">
+	<label>任务状态</label>
+	<select id="taskStatus" name="taskStatus" data-select="resource:lookup/taskStatusEnum">
+		<option value="">全部</option>
+	</select>
+	</fieldset>
+	<input type="submit" value="查询" class="w-form-query" />
+	<input type="submit" value="清空" class="w-form-clear" id="clear" />	
+</form>
+</div>
+<div id="tasks" class="w-grid" style="margin-top:10px">
+	<button title="暂停" style="margin-bottom:10px" data-href="transmit(W.$('tasks').grid.selected_rows('id')) -> ids|call(pause,ids)">
+		<img src="images/icon/pause.png">
+	</button>
+	<button title="启动" style="margin-bottom:10px" data-href="transmit(W.$('tasks').grid.selected_rows('id')) -> ids|call(resume,ids)">
+		<img src="images/icon/resume.png"></button>
+    <button title="新建" id="add" data-href="open('pages/timerTask/add_task')"><img title="新建" src="images/icons/add.png"/></button>
+    <button title="删除"  data-href="push(W.$('tasks').selected_rows('id')) -> ids|assert(ids.length) -> confirm('是否删除 ' + ids.length + ' 条记录？') -> call(del, ids)"><img title="删除" src="images/icons/delect-01.png"/></button>	
+	<button title="刷新" id="refreshbutton" ><img title="刷新" src="images/icons/refresh-01.png"/></button>
+	<table style="width:100%">
+		<thead>
+			<tr>
+				<th width="5%" class="w-grid-select"></th>
+				<th width="3%" class="w-grid-index">序号</th>
+				<th width="20%">任务名称</th>
+				<th width="20%">任务类型</th>			
+				<th width="20%">定时策略</th>
+				<th width="20%">上次运行时间</th>
+				<th width="12%">状态</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><input name="id" type="hidden" /></td>
+				<td></td>
+				<td><a name="description" data-href="call(toDetail,row.data().id)"></a></td>
+				<td name="taskcode"></td>		
+				<td name="cronDesc"></td>
+				<td name="lastruntime" date-format="yyyy-MM-dd HH:mm:ss"></td>
+				<td name="status" data-enum-lookup="lookup/taskStatusEnum"></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<script>
+W.fire('form:qeury');
+W.on('form:qeury','private',function(e){
+	  isRefreshByHand = true ;
+	  W.$('searchForm').form.query();
+});
+var isPositiveNum = function(s){
+	  var re = /^[0-9]*[1-9][0-9]*$/ ;  
+	  return re.test(s)  
+	}
+W.$('clear').on('click','private',function(e){	
+	W.$('searchPortalServer').data('');
+});
+
+W.on(['taskService:create', 'taskService:remove'], 'public',function() {
+	W.$('tasks').refresh();
+}); 
+var toDetail = function(id){
+	W.popup('pages/timerTask/taskDetail',id);
+}
+
+var pause = function(ids){
+	if(ids!=""){
+		W.create('taskScheduler/pause',ids).done(function(result) {
+			W.alert("暂停成功!");
+			W.$('tasks').grid.refresh();
+		});
+	}else{
+		W.alert('请选择最少一条记录');
+	}
+}
+
+var resume = function(ids){
+	if(ids!=""){
+		W.create('taskScheduler/resume',ids).done(function(result) {
+			W.alert("启动成功!");
+			W.$('tasks').grid.refresh();
+		});
+	}else{
+		W.alert('请选择最少一条记录');
+	}
+}
+
+W.on([/taskScheduler\/modifyTaskRunTime\/\d+:create/],'public',function(){
+	W.$('tasks').grid.refresh();
+});
+
+W.$('tasks').on('grid:refresh', function(e, query_data, paginator) {
+	W=this;
+	if(!isPositiveNum(paginator.pageSize)){
+		paginator.pageSize = 10;
+	}
+	W.create('taskScheduler/search?'+paginator,query_data).done(function(contents) {
+		W.data(contents);
+	});
+});
+
+//删除
+var del = function(ids){
+	W.get('taskService/interface/'+ids).done(function(data) {
+		if(data){
+			W.alert("接口绑定的任务不能删除！");
+		}else{
+			W.remove('taskService', ids).done(function(callBackValue){
+				W.alert(callBackValue);
+			});
+		 }		
+	});
+}
+
+//刷新
+W.$('refreshbutton').on('click','private',function(e){
+	W.fire('form:qeury');
+});
+
+var pendingRowChange = function(data, row) {
+	if(data && data.pStatus ==3){
+		 row.css("background-color","#ff7174");
+	}
+	if(data && data.pStatus ==1){
+		 row.css("background-color","#ff7174");
+	}
+	
+};
+
+W.$('searchForm').form.query();
+</script>

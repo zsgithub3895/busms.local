@@ -1,0 +1,24 @@
+<!-- @meta title="监控系统"  unique="true" icon="images/icon/icon_16_network.png" -->
+<form id="searchForm" style="margin:4px 5px">
+ <fieldset data-fieldset="column:1">
+	<label>接口类型</label>
+	<select id="type" name="type" data-select="resource:lookup/interfaceVarityEnum">
+	<option value="ALL">全部</option>
+	</select>
+	</fieldset>
+	<input type="submit" value="查询" class="w-form-query" />
+	<input type="submit" value="清空" class="w-form-clear" id="clear" />	
+</form>
+<script>
+
+ W.on('form:query','private',function(e){
+	 var typeSelect=$searchForm.data();
+   W.get("ngUser/currentuser").done(function(cityCode) {
+		W.popup("pages/monitor/showImage",typeSelect.type,cityCode);
+		}); 
+});
+/*******************关闭监控任务*********************************/
+	    W.$('clear').on('click','private',function(e){	
+			W.$('searchPortalServer').data('');
+		});	
+</script>

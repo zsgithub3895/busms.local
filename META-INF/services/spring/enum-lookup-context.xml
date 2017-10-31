@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<bean id="checkRuleEnum" class="com.onewaveinc.core.lookup.LookupBean">
+		<property name="lookup">
+			<value>text</value>
+		</property>
+		<property name="source">
+			<value>全匹配=ALL,正则匹配=REGX</value>
+		</property>
+	</bean>
+	<bean id="businessPlatformEnum" class="com.onewaveinc.core.lookup.LookupBean">
+		<property name="lookup">
+			<value>sql</value>
+		</property>
+		<property name="cached">
+			<value>false</value>
+		</property>
+		<property name="source">
+			<value>select i.code,i.name from COMMON_ENUM_ITEM i where i.enum_id=
+				(select e.id from COMMON_ENUM e where e.code='businessPlatform')
+				and i.code is not null and i.code != 'null' and i.status=1
+			</value>
+		</property>
+	</bean>
+	
+	<bean id="monitorGroupSelect" class="com.onewaveinc.core.lookup.LookupBean">
+		<property name="lookup">
+			<value>sql</value>
+		</property>
+		<property name="cached">
+			<value>false</value>
+		</property>
+		<property name="source">
+			<value>select i.code,i.name from COMMON_ENUM_ITEM i where i.enum_id=
+				(select e.id from COMMON_ENUM e where e.code='MONITOR_GROUP')
+				and i.code is not null and i.code != 'null' and i.status=1
+			</value>
+		</property>
+	</bean>
+	
+	<bean id="interfaceVarityEnum" class="com.onewaveinc.core.lookup.LookupBean">
+		<property name="lookup">
+			<value>sql</value>
+		</property>
+		<property name="cached">
+			<value>false</value>
+		</property>
+		<property name="source">
+			<value>select i.code,i.name from COMMON_ENUM_ITEM i where i.enum_id=
+				(select e.id from COMMON_ENUM e where e.code='interfaceType')
+				and i.code is not null and i.code != 'null' and i.status=1
+			</value>
+		</property>
+	</bean>
+	<bean id="cityCode" class="com.onewaveinc.core.lookup.LookupBean">
+		<property name="lookup">
+			<value>sql</value>
+		</property>
+		<property name="cached">
+			<value>false</value>
+		</property>
+		<property name="source">
+			<value>
+				select i.code,i.name from T_CITY i
+			</value>
+		</property>
+	</bean>
+	<bean id="strategycode" class="com.onewaveinc.core.lookup.LookupBean">
+		<property name="lookup">
+			<value>sql</value>
+		</property>
+		<property name="cached">
+			<value>false</value>
+		</property>
+		<property name="source">
+			<value>select strategycode,strategyname FROM T_CHECK;</value>
+		</property>
+	</bean>
+
+	<bean id="defId" class="com.onewaveinc.core.lookup.LookupBean">
+		<property name="lookup">
+			<value>sql</value>
+		</property>
+		<property name="cached">
+			<value>false</value>
+		</property>
+		<property name="source">
+			<value>select i.typecode,i.typecode FROM OW_COMM_TASK_DEF i;</value>
+		</property>
+	</bean>
+	<bean id="belongCity" class="com.onewaveinc.core.lookup.LookupBean">
+		<property name="lookup">
+			<value>sql</value>
+		</property>
+		<property name="cached">
+			<value>false</value>
+		</property>
+		<property name="source">
+			<value>select i.code,i.name FROM T_CITY i;</value>
+		</property>
+	</bean>
+
+	<bean id="readonly" class="com.onewaveinc.core.lookup.LookupBean">
+		<property name="lookup">
+			<value>text</value>
+		</property>
+		<property name="source">
+			<value>否=1,是=2</value>
+		</property>
+	</bean>
+	<bean id="accessInterfaceExpression" class="com.onewaveinc.core.lookup.LookupBean">
+		<property name="lookup">
+			<value>text</value>
+		</property>
+		<property name="source">
+			<value>soap1.1=1,soap1.2=2,post=3,get=4</value>
+		</property>
+	</bean>
+</beans>

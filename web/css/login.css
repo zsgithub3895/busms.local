@@ -1,0 +1,21 @@
+@charset "utf-8";
+/* CSS Document */
+*{ margin:0; padding:0; font-family:微软雅黑;}
+.loginbody{ text-align:center;}
+.container{ width:424px;width:364px; height:443px;  height:333px;background:url(../images/login.png) no-repeat 0 0; margin:0 auto;position:absolute;left:50%;top:50%;margin-left:-212px;margin-top:-222px; padding-top:110px; padding-left:60px;}
+
+.title{ font-size:24px; text-align:center; margin-left:-50px; font-family:黑体;}
+
+.logininput{ font-size:16px; color:#374757; padding-left:20px; padding-right:60px; color:#374757;}
+
+.userInput{width:310px;height:53px; background:url(../images/userInput.png) no-repeat 0 0; display:block; border:0;  margin-top:68px;}
+.userInput:hover{ background:url(../images/userInput.png) no-repeat 0 -53px;}
+	
+.pwInput{width:310px;height:53px; background:url(../images/pwInput.png) no-repeat 0 0; display:block; border:0; margin-top:-1px;}
+.pwInput:hover{background:url(../images/pwInput.png) no-repeat 0 -53px;}
+
+.loginButton{width:310px; height:53px; background:url(../images/btn-login.png) no-repeat 0 0; display:block; border:0; margin-top:18px;}
+.loginButton:hover{background:url(../images/btn-login.png) no-repeat 0 -53px;}
+
+.forget a{ font-size:14px; color:#2d3e50; text-align:center; margin-left:-40px; display:inline-block; margin-top:12px; text-decoration:none;}
+.forget a:hover{ color:#374757;}

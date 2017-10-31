@@ -1,0 +1,110 @@
+<#ftl>
+<!-- @meta var="node" title="用户管理" icon="images/icon/icon_16_network.png" unique="true" -->
+<form id="userForm" data-form="title:用户信息;column:1">
+	<#if node> 
+	<label>登录名称</label> 
+	<input name="loginName" type="text"
+		class="w-required" data-colspan="2" style="width: 90%;"
+		data-validate-exp="not_char['!@#$%^&*(),.<>?;:[]{}\'/+-_']"/>
+	<label>真实名称</label> 
+	<input name="name" type="text" class="w-required" id="name"
+		data-validate-exp="not_char['!@#$%^&*(),.<>?;:[]{}\'/+-_']"/>
+    <label>密码</label>
+	<input name="password" type="password" data-colspan="2"
+		style="width: 90%;" placeholder="请输入密码" /> 
+	<label>角色绑定</label> <select name="roleIds" multiple="multiple"
+		data-select="resource:roles; text:name; value:id"
+		class="w-select-multiple">
+	</select> <label id="cityIdLab">所属地区</label> <select name="cityId" id="cityId"
+		data-select="resource:lookup/belongCity">
+	</select> <input type="submit" class="w-operate-query" value="更新"
+		data-href="form.validate() -> user|call(updateUser,user) -> close()" />
+	<input type="submit" value="返回" class="w-window-button"
+		data-href="close()" />
+<#else>
+<label>登录名称</label> 
+<input data-validate-exp="not_char['!@#$%^&*(),.<>?;:[]{}\'/+-_']"
+	name="loginName" type="text" class="w-required" />
+<label>真实名称</label>
+<input data-validate-exp="not_char['!@#$%^&*(),.<>?;:[]{}\'/+-_']"
+	name="name" type="text" class="w-required" id="name" />
+<label>密码</label>
+<input name="password" type="password" data-colspan="2"
+	style="width: 90%;" data-validate-exp="not_empty" placeholder="请输入密码" />
+<label>角色绑定</label>
+<select name="roleIds" multiple="multiple"
+	data-select="resource:roles; text:name; value:id"
+	class="w-select-multiple">
+</select>
+<label id="cityIdLab">所属地区</label>
+<select name="cityId" id="cityId"
+	data-select="resource:lookup/belongCity">
+</select>
+<input type="submit" value="新建" class="w-window-button"
+	data-href="W.createUser() -> close()" />
+<input type="submit" value="返回" class="w-window-button"
+	data-href="close()" />
+</#if>
+</form>
+<script type="text/javascript" language="javascript">
+	if (node) {
+		W.get('user/' + node.id).done(function(user) {
+			W.get('ngUser/' + node.id).done(function(_user) {
+				user.cityId = _user.cityId;
+				W.$('userForm').data(user);
+			});
+		});
+	} else {
+		W.$('name').data(null);
+		W.$('password').data(null);
+	}
+
+	var updateUser = function(user) {
+		 if(user.password == '') {
+			user = delProperty(user, 'password');
+		  }
+			W.update('user/' + node.id, user).done(function(e) {
+				W.update('ngUser/update/' + node.id, user).done(function(e) {
+
+				}); 
+			});
+	}
+	W.createUser = function(e) {
+		W.$('userForm').validate().done(function(user) {
+			W.create('user', user).done(function(e) {
+				W.create('ngUser', user).done(function(e) {
+					W.close();
+				});
+			});
+		});
+	}
+
+	var delProperty = function del(json, v) {
+		var nJson = {};
+		for (i in json) {
+			if (i != v) {
+				nJson[i] = json[i];
+			}
+		}
+		return nJson;
+	}
+	
+	var adminDisabled =  function(){
+		var admin = $("input[name='loginName']").val();
+		if(admin == "admin"){
+			$("input[name='loginName']").attr("disabled","disabled");
+			$("input[name='name']").attr("disabled","disabled");
+			$("a[name='roleIds']").find("input").attr("disabled","disabled");
+			$("a[name='roleIds']").unbind();
+		}
+	}
+
+	var passwordStyle = function(){
+		if(id){
+			$("input[name='password']").attr("placeholder","******");
+		}
+	}
+
+	adminDisabled();
+	passwordStyle();
+</script>

@@ -1,0 +1,23 @@
+<!-- @meta title="接口详细信" var="node" close="false" desc="接口详细信" unique="true" icon="images/icons/content.png" -->
+<div style="background:#fff; position:absolute; top:0px; right:0px; bottom:0px; left:0px; " >
+	<div id="businessMenuTree" class="w-tree" data-tree="resource1:menu/170;"></div>
+</div>
+<script language="javascript">
+var menuUrlMapping = {};
+W.get("menu/170").done(function(menu){
+	 var children = [menu];
+	 while(children.length > 0){
+		 var m = children.pop();
+		 menuUrlMapping["id"+m.id] = m.url;
+		 if(m.children)
+		 	$.merge( children, m.children );
+	 }
+	 var treeResource = W.tree.Resource(menu.children);
+	 W.$('businessMenuTree').tree.resource(treeResource);
+});
+W.$('businessMenuTree').on("tree:select",'private',function(e,node){	
+		var url = menuUrlMapping['id'+node.id()];	
+		if(url)
+			W.fire("layouts-1-2:open",url);
+});
+</script>

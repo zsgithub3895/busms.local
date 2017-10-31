@@ -1,0 +1,28 @@
+/* CSS Document */
+.w-search-input-wrap{ display: inline-block; position:relative; width:100%; z-index: 10000; background:#fff; height:25px;}
+.w-search-input-container{ position:absolute; top:0; left:0; right:0; bottom:0;}
+.w-search-input-container textarea, .w-search-input-container input[type='text']{ width:100% !important; max-width:1000px !important;
+	border:1px solid #bfbfbf !important; 
+	background: #fff url("../images/new/search-input-bg.png") left top no-repeat !important; 
+	height:23px ; line-height:16px ; 
+	border:1px solid #bfbfbf !important;
+	padding-top:3px; padding-bottom:3px;
+	padding-right:12px;
+	resize: none;
+	outline: none;
+}
+.w-search-input-container textarea{ overflow: hidden; }
+.w-search-input-container textarea.expand{ overflow: auto;}
+.w-search-input .ui-state-focus{}
+.w-search-input-wrap .default-style{ color:#ccc;}
+.w-search-input-wrap .icon-clear{ position: absolute; right:6px; width:6px; height:6px; top:2px; cursor:pointer; display: none;}
+.w-search-input-wrap .icon-search{display: block; position: absolute; left: 3px; top: 3px; cursor:pointer; height:16px; line-height:16px !important;    }
+.w-search-input-tip{ border:1px solid #bfbfbf; border-top:none; min-height:16px; line-height: 16px; padding:3px; color:#999; background: #fff; display: none; clear:both;}
+.w-search-textarea-wrap{ width:100%;}
+.w-search-input-wrap  .w-search-menu-handle{ display:block; position:absolute; left:18px; top:3px; cursor:pointer; background:url(../images/new/select-btn-style1-arrow-hover.png) no-repeat center center; height:16px; width:10px;}
+.w-search-menu{ width:80px; padding:3px; border:1px solid #b6b6b6; box-shadow:1px 1px 3px #666; background:#fff; display:none;}
+.w-search-menu li{ height:20px; line-height:20px; padding-left:15px; cursor:pointer;}
+.w-search-menu li.selected{ background:url(../images/new/right_select.png) left center no-repeat; }
+.w-search-menu li:hover{ background-color:#dbe8f5;}
+
+.w-tree .suite-tree-search-input { padding:3px; border:1px solid #b6b6b6;margin-left: 3px;margin-right: 3px;margin-top: 3px; width: 185px;}

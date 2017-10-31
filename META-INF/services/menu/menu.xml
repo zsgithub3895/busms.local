@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<menus>
+	<menu ref="10">
+		<menu id="160" title="基础数据" privilege="BASIC_DATA">
+			<menu id="1601" title="地区管理" index="1" url="pages/basic/areamanage/area"
+				icon="images/icons/public_network.png" privilege="AREA_ALL" />
+			<menu id="1602" title="枚举值管理" index="2" url="enum/enumList"
+				icon="images/icons/public_network.png" privilege="ENUM_ALL" />
+		</menu>
+		<menu id="170" title="接口管理" privilege="INTERFACE_ALL">
+			<menu id="1701" title="接口配置" index="1"
+				url="pages/interfacemanage/interfaceconfigure" icon="images/icons/public_network.png"
+				privilege="INTERFACE_CONFIG" />
+			<menu id="1702" title="接口校验" index="2"
+				url="pages/interfacemanage/interfacecheck" icon="images/icons/public_network.png"
+				privilege="INTERFACE_CHECK" />
+		</menu>
+		<menu id="180" title="结果查询" privilege="RESULT_ALL">
+			<menu id="1801" title="结果信息" index="1"
+				url="pages/resultCheck/resultCheck" icon="images/icons/public_network.png"
+				privilege="RESULT_CHECK" />
+		</menu>
+		<menu id="190" title="策略管理" privilege="POLICY_MANAGE" >
+		<menu id="1901" title="定时任务" index="1" url="pages/timerTask/taskList"
+			icon="images/icons/public_network.png" privilege="SCHEDULE_TASK" />
+		</menu>
+		<menu id="200" title="监控页面" privilege="MONITOR_ALL">
+			<menu id="2001" title="监控界面" index="1" url="pages/monitor/monitorList"
+				icon="images/icons/public_network.png" privilege="MONITOR" />
+		</menu>
+	</menu>
+
+</menus>

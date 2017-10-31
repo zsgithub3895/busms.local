@@ -1,0 +1,18 @@
+/* CSS Document */
+.w-wizard-steps{ height:30px; line-height: 30px; display: block; margin: auto; text-align: center; padding-top:10px; margin-bottom:5px;}
+.w-wizard-steps li{ height:30px; line-height: 30px; position: relative; display: inline-block; padding-left:42px;}
+.w-wizard-steps li,.w-wizard-steps li span{ background-repeat: no-repeat;}
+.w-wizard-steps li span{ padding-right:42px;}
+.w-wizard-steps li span{ display: block; height:30px; line-height: 30px;}
+.w-wizard-steps li:first-child{  background-image: url("../images/new/wizard-step-first.png");  }
+.w-wizard-steps li:first-child span{ background-image: url("../images/new/wizard-step-first.png"); background-position:right; }
+.w-wizard-steps li:first-child.ui-state-active,.w-wizard-steps li:first-child.ui-state-active span{ background-image: url("../images/new/wizard-step-first-active.png"); }
+.w-wizard-steps li.ui-state-active{ z-index:110 !important;}
+.w-wizard-steps li:not(:last-child):not(:first-child){ background-image: url("../images/new/wizard-step-center.png"); margin-left: -15px; }
+.w-wizard-steps li:not(:last-child):not(:first-child) span{ background-image: url("../images/new/wizard-step-center.png") ; background-position:right; }
+.w-wizard-steps li:not(:last-child):not(:first-child).ui-state-active,.w-wizard-steps li:not(:last-child):not(:first-child).ui-state-active span{ background-image: url("../images/new/wizard-step-center-active.png");}
+.w-wizard-steps .ui-state-active{ z-index:20 !important; color:#4780b6; font-weight:bold; border:none;}
+.w-wizard-steps li:last-child{ background-image: url("../images/new/wizard-step-last-bg.png"); margin-left: -15px; }
+.w-wizard-steps li:last-child span{ background-image: url("../images/new/wizard-step-last-bg.png") ; background-position:right;  margin-right:-5px;}
+.w-wizard-steps li:last-child.ui-state-active,.w-wizard-steps li:last-child.ui-state-active span{ background-image: url("../images/new/wizard-step-last-active.png");}
+.w-wizard-steps .ui-state-disabled{ opacity:1; color: #F2F2F2; text-shadow: -1px -1px 0 #777777;}

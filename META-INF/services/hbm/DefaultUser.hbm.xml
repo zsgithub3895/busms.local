@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping auto-import="false">
+	<class name="com.sihuatech.user.entity.DefaultUser" table="SECURITY_DEFAULT_USER">
+		<id name="id" type="long" column="ID">
+			<generator class="native" />
+		</id>
+		<property name="name" type="java.lang.String" column="NAME" />
+		<property name="loginName" type="java.lang.String" column="LOGIN_NAME" />
+		<property name="passwordEncrypted" type="java.lang.String" column="PASSWORD" />
+		<property name="salt" type="java.lang.String" column="SALT" />
+		<property name="status" type="int" column="STATUS" />
+		<property name="createTime" type="java.util.Date" column="CREATE_TIME" />
+		<property name="lastModifyTime" type="java.util.Date" column="LAST_MODIFY_TIME" />
+		<property name="lastLoginTime" type="java.util.Date" column="LAST_LOGIN_TIME" />
+		<property name="system" type="java.lang.String" column="SYSTEM" />
+		<property name="cityId" type="java.lang.String" column="CITYCODE" />
+	</class>
+</hibernate-mapping>

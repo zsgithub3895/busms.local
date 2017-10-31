@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app id="mrc" version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+
+	<display-name>mrc</display-name>
+
+	<listener>
+		<listener-class>com.onewaveinc.mrc.web.ModuleContextStartupListener</listener-class>
+		<listener-class>com.onewaveinc.mrc.web.ModuleContextBridgeListener</listener-class>
+	</listener>
+
+	<filter>
+		<filter-name>ModuleBridgeFilter REQUEST</filter-name>
+		<filter-class>com.onewaveinc.mrc.web.ModuleBridgeFilter</filter-class>
+		<init-param>
+			<param-name>dispatcher</param-name>
+			<param-value>REQUEST</param-value>
+		</init-param>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>ModuleBridgeFilter REQUEST</filter-name>
+		<url-pattern>/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+	</filter-mapping>
+
+	<filter>
+		<filter-name>ModuleBridgeFilter FORWARD</filter-name>
+		<filter-class>com.onewaveinc.mrc.web.ModuleBridgeFilter</filter-class>
+		<init-param>
+			<param-name>dispatcher</param-name>
+			<param-value>FORWARD</param-value>
+		</init-param>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>ModuleBridgeFilter FORWARD</filter-name>
+		<url-pattern>/*</url-pattern>
+		<dispatcher>FORWARD</dispatcher>
+	</filter-mapping>
+
+	<filter>
+		<filter-name>ModuleBridgeFilter INCLUDE</filter-name>
+		<filter-class>com.onewaveinc.mrc.web.ModuleBridgeFilter</filter-class>
+		<init-param>
+			<param-name>dispatcher</param-name>
+			<param-value>INCLUDE</param-value>
+		</init-param>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>ModuleBridgeFilter INCLUDE</filter-name>
+		<url-pattern>/*</url-pattern>
+		<dispatcher>INCLUDE</dispatcher>
+	</filter-mapping>
+
+</web-app>

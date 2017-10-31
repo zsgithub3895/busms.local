@@ -1,0 +1,40 @@
+<#ftl>
+<!-- @meta var="id" title="${id?'编辑':'新建'}角色" icon="images/icon/icon_16_network.png" -->
+<form id="roleForm" data-form="column:2";>
+	<label>名称</label>
+	<input name="name" type="text" class="w-required" data-validate-exp="not_char['!@#$%^&*(),.<>?;:[]{}\'/+-_']" placeholder="必填且不多于16字符"/>
+	<label>代码</label>
+	<input id="code" name="code" type="text" class="w-required" data-validator="message:必填且不多于16字符; pattern:^.{1,16}$" placeholder="必填且不多于16字符"/>
+	<div id="tree" class="w-tree" data-tree="title:功能权限; resource:privilege-tree; checkbox:false"></div>
+	<#if id>
+	<input id="update" class="w-operate-query" type="submit" value="更新" data-href="form.validate() -> role|call(updateTree,role) -> close()" />
+	<input id="remove" class="w-operate-query" type="submit" value="删除" data-href="confirm('你确认删除吗？') -> remove('role/' + id) -> close()" />
+	<#else>
+	<input id="create" class="w-operate-query" type="submit" value="新建" data-href="form.validate() -> role|call(createTree,role) -> close()" />
+	</#if>
+	<input id="back" class="w-operate-query" type="submit" value="关闭" data-href="W.open('security/roles');" />
+</form>
+<script>
+W.$('roleForm').query();
+var updateTree = function(role){
+	var data = W.$('tree').tree.checked(true);
+	W.update('role/' + id, {privilegeIds:data, role:role});
+}
+var createTree = function(role){
+	var data = W.$('tree').tree.checked(true);
+	W.create('role', {privilegeIds:data, role:role});	
+}
+if (id !== undefined) {
+	W.$('code').attr('readonly','readonly');
+	W.$('code').attr('disabled','disabled');
+
+	W.get('role/' + id).done(function(data) {
+		if(data.role.code=='ADMIN'){
+			$update.node.hide();
+			$remove.node.hide();
+		}
+		W.$('roleForm').data(data.role);
+		W.$('tree').data(data.privilegeIds);
+	});
+}
+</script>

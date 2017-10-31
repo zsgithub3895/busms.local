@@ -1,0 +1,243 @@
+<!-- @meta var="type,cityCode" title="监控展现" icon="images/icons/column-add.png" width="9999999" height="9999999" -->
+<div id="allImage">
+	#{<#list this as ic>
+	<div id="${ic}" style="float:left;margin-left:10px;margin-bottom:10px;border:1px solid;background:#f3f3f3">
+		<div id="${ic}-title" style="width: 350px; height: 20px; overflow:hidden;"></div>
+		<div id="${ic}-body" style="width:350px; height:100px;"></div>
+		<div id="${ic}-group" style="width:350px; height:15px; overflow:hidden;text-align:center;font-size:10px;"></div>
+	</div>
+	</#list>}
+</div>
+<script>
+/*******初始化，加载页面************************************************************/
+var times;
+
+//存储各接口阈值
+var delayThresholds = {};
+
+W.get('interfaceConfigManageService/idInterface'+'/'+cityCode+'/'+type).done(function(result) {
+		var uniqueGroup=[];
+		var legendMap={};
+		var codeArray=[];
+		var chartMap={};
+		var mapCroup={};
+		var mapStatus={};
+	if(null!=result && result.length>0){
+		for(var i=0;i<result.length;i++){
+				var InterfaceConfig=result[i];
+			    var code=InterfaceConfig.code;
+			// 保存接口阈值
+			//alert("code"+code+":"+InterfaceConfig.delayThreshold);
+			delayThresholds[code] = InterfaceConfig.delayThreshold;
+			    codeArray.push(code);
+			    var interfaceName=InterfaceConfig.name;
+			    var monitorGroup=InterfaceConfig.monitorGroup;
+			    uniqueGroup.push(monitorGroup);
+			    var optiontemp = mapCroup[monitorGroup];
+			    if(!optiontemp){
+			    	optiontemp = {
+			    			title: {
+			    				text: '',
+			    				textStyle: {
+			    					fontSize: 12,
+			    				},
+			    				left: 'center'
+			    			},
+			    		    tooltip : {
+			    		        trigger: 'item'
+			    		    },
+			    		    /* grid :{
+			    		    	x:50,
+			    		    	y:2,
+			    		    	x2:20,
+			    		    	y2:2,
+			    		    	width:230,
+			    		    	height:180    	
+			    		    }, */
+			    		    grid: {
+			    	            top: '7%',
+			    	            left: '1%',
+			    	            right: '30%',
+			    	            bottom: '7%',
+			    	            containLabel: true
+			    	        },
+			    		    legend: {
+			    		    	orient: 'vertical',
+			    		    	left: 'right',
+			    		    	top: 'middle',
+			    		    	align: 'left',
+			    		    	itemGap: 1,
+			    		    	itemWidth: 11,
+			    		    	itemHeight: 7,
+			    		    	textStyle: {
+			    		    		fontStyle: 'oblique',
+			    		    		fontSize: 10
+			    		    	},
+			    	            data:[]
+			    	        },
+			    		   xAxis : [
+			    		        {
+			    		            type : 'category',
+			    		            boundaryGap : true,
+			    		            data : (function (){
+			    		                var res = [];
+			    		                var len =10;
+			    		                while (len--) {
+			    		                    res.unshift('');
+			    		                }
+			    		                return res;
+			    		            })()
+			    		        }
+			    		    ], 
+			    		    yAxis : [
+			    		        {
+			    		        	name : '延迟(ms)',
+			    		        	nameLocation : 'start',
+			    		            nameGap : 10,
+			    		            type : 'value',
+			    		            scale: true,
+			    		            boundaryGap: ['10%', '10%']
+			    		        }
+			    		    ],
+			    		    series : [
+			    		    ] 
+			    		};
+			    }
+			    
+			    //alert(optiontemp.series.length);
+			    mapStatus[code]=optiontemp.series.length;
+			    optiontemp.series.push({
+			    	name: interfaceName,
+			    	type: 'line',
+			    	data:(function (){
+ 			                var res = [];
+			                var len = 10;
+			                while (len--) {
+			                    res.push(0);
+			                }
+			                return res;
+			            })()
+			          });
+			    
+			    var legends = legendMap[monitorGroup];
+                if (!legends) {
+                    legends = [];
+                }
+                legends.push(interfaceName);
+                legendMap[monitorGroup] = legends;
+                optiontemp.legend.data = legends;
+			    
+			    mapCroup[monitorGroup] = optiontemp;
+		    }
+		uniqueGroup=uniqueGroup.unique();
+		W.$("allImage").data(uniqueGroup);
+		for(var i=0;i<uniqueGroup.length;i++){
+			var divIdBody=document.getElementById(uniqueGroup[i]+"-body");
+			var myChart = echarts.init(divIdBody);
+			chartMap[uniqueGroup[i]+"-body"]=myChart;
+			/* var _option = mapCroup[uniqueGroup[i]];
+			_option.title.text = uniqueGroup[i]; */
+			myChart.setOption(mapCroup[uniqueGroup[i]]);
+		}  
+		
+		W.get('enumItem/code/'+uniqueGroup).done(function(message) {
+			for (x in message){
+				var divIdGroup=document.getElementById(x+"-group");
+				W.$(divIdGroup).data(message[x]);
+			}
+		});
+		
+/**************加入延迟，接口名字，报文正确性*******************************************/	
+ var timeTicket=function(){
+			  W.get('DataRecordStatusService/status/'+codeArray).done(function(statusResult){
+				 for(var i=0;i<uniqueGroup.length;i++){
+					    var divIdNode=document.getElementById(uniqueGroup[i]+"-title");		
+						var divIdBody2=document.getElementById(uniqueGroup[i]+"-body");
+						var divIdAll = document.getElementById(uniqueGroup[i]);
+						var myChart=chartMap[uniqueGroup[i]+"-body"];
+						//alert(statusResult[uniqueGroup[i]].length);
+					//for(var j=0;j<statusResult[uniqueGroup[i]].length;j++){
+						var grouplist=statusResult[uniqueGroup[i]];
+						var firstResult="";
+						var optionTemp = mapCroup[uniqueGroup[i]];
+						for(var k=0;k<grouplist.length;k++){
+							var DataRecordStatus=grouplist[k];
+							var code=DataRecordStatus.interfaceCode;
+							var lastData=0;
+							var result='';
+							if(DataRecordStatus.respCorrect==1){
+								  
+						    	 //result=DataRecordStatus.interfaceName+","+DataRecordStatus.delay+"ms,正常; ";
+						    	  lastData=DataRecordStatus.delay;	
+									  /* myChart.addData([
+									     	        [
+									     	            mapStatus[code],     // 系列索引
+									     	            lastData, // 新增数据
+									     	            false,    // 新增数据是否从队列头部插入
+									     	            false,    // 是否增加队列长度，false则自定删除原有数据，队头插入删队尾，队尾插入删队头
+									     	        ]
+									     	    ]); */
+						     	    var seriesTemp = optionTemp.series;
+									var serieTemp = seriesTemp[mapStatus[code]];
+									var dataTemp = serieTemp.data;
+									dataTemp.push(lastData);
+									dataTemp.shift();
+							    	  myChart.setOption({
+							    	        series: [{
+							    	            name:DataRecordStatus.interfaceName,
+							    	            data: dataTemp
+							    	        }]
+							    	    });
+							    	    
+						            }else{
+						        	    result=DataRecordStatus.interfaceName+","+"异常; ";
+										//W.$(divIdNode).data(firstResult);
+										//divIdNode.setAttribute("style","font-size:15px;color:red;text-align:right;background-color:#408080;");
+										//W.$(divIdBody).data(DataRecordStatus.interfaceName);							    		
+										divIdAll.setAttribute("style","float:left;margin-left:10px;margin-bottom:10px;border:2px solid red;background:#f3f3f3");
+						             }
+							if (delayThresholds[code]!=0 && DataRecordStatus.delay > delayThresholds[code]){
+                                result=DataRecordStatus.interfaceName+","+"高延迟; ";
+                                divIdAll.setAttribute("style","float:left;margin-left:10px;margin-bottom:10px;border:2px solid red;background:#f3f3f3");
+                            }
+							if (DataRecordStatus.respCorrect==1 && delayThresholds[code]!=0 && DataRecordStatus.delay <= delayThresholds[code]){
+                                divIdAll.setAttribute("style","float:left;margin-left:10px;margin-bottom:10px;border:1px solid;background:#f3f3f3");
+                            }
+							
+							
+							firstResult+=result;
+						}
+						divIdNode.setAttribute("title",firstResult);
+						W.$(divIdNode).data(firstResult);
+					}
+					 
+			//  } 
+			  });
+				}
+			times=setInterval(function(){timeTicket();},3000);						            
+	}else{
+		alert("接口配置无数据,请配置接口数据！");
+	} 
+});
+
+/****************关闭监控*******************************************************/
+W.on('close', function(e) { 
+	 clearInterval(times);
+	 });
+	 W.on('showView','public', function(e) { 
+	 clearInterval(times);
+	 }); 
+
+/****************去掉数组中的重复元素*******************************************************/
+	 Array.prototype.unique = function(){
+		 var res = [];
+		 var json = {};
+		 for(var i = 0; i < this.length; i++){
+		  if(!json[this[i]]){
+		   res.push(this[i]);
+		   json[this[i]] = 1;
+		  }
+		 }
+		 return res;
+		}
+</script>

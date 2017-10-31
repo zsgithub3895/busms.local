@@ -1,0 +1,25 @@
+@charset "utf-8";
+/* CSS Document */
+
+body{ font-family:"微软雅黑"; min-width:1000px;}
+form{ padding:0px; margin:0px;}
+
+.arrow{background-image: url("../images/buttonArrows.png"); background-repeat: no-repeat;  height: 15px; margin: 0 auto;   width: 15px; display:inline-block;}
+.arrow_down{background-position: -51px 53%;}
+.arrow_down_single{background-image:url("../images/new/arr-01.png"); background-repeat:no-repeat; width: 6px; display:inline-block; height:5px;}
+.arrow_down_style1{background-image:url("../images/new/arr-04.png"); background-repeat:no-repeat ; width: 6px; display:inline-block; height:4px; background-position:center; margin-left:3px;}
+
+
+/** box模块 */
+.box{ border:1px solid #b5bcc7; box-shadow:2px 2px 4px #666;background:#fff;}
+.box .box_title{ height:25px; line-height:25px; padding:0 5px; background:url(../images/box_head_bg.png); border-bottom:1px solid #b5bcc7; text-shadow: 1px 1px 1px #666; color: #333; font-weight:bold;}
+.box .box_content{ padding:5px; background:#fff;}
+
+.downmenu{ border:1px solid #666; box-shadow:1px 1px 3px #333333; position:absolute; background:#fff; width:90px; top:0px; right:50%; z-index:10000; display:none; -moz-border-radius: 4px/*{cornerRadius}*/; -webkit-border-radius: 4px/*{cornerRadius}*/; border-radius: 4px/*{cornerRadius}*/;}
+.downmenu li{ height:20px; line-height:20px; padding:1px; cursor:pointer; padding-left:5px; text-shadow:1px 2px 2px #ccc; margin:2px;}
+.downmenu li:hover{ background:url(../images/new/downmenu_bg.png); color:#fff;}
+.downmenu .group_split{ height:1px !important; line-height:1px !important; background:#b5bcc7;}
+
+.clearfix:after{content:"";display:block;clear:both;}
+.clearfix{zoom:1;}
+

@@ -1,0 +1,12 @@
+@charset "utf-8";
+/* CSS Document */
+.select-btn-style1{ background:#60a3d2; box-shadow:inset 1px 1px 1px #437293; height:23px; line-height:23px; display:inline-block; color:#fff; font-weight:bold; border-radius: 3px;  cursor:pointer;}
+.select-btn-style1 .arrow-handle{ height:21px; width:21px; line-height:21px; text-align:center; display:inline-block; position:absolute; right:0px; top:0px; margin:1px;}
+.select-btn-style1 .arrow-handle span{ height:21px; width:21px; display:block; vertical-align:middle; background:url(../images/new/select-btn-style1-arrow.png) no-repeat center;}
+.select-btn-style1:hover{ border:1px solid #95b4d1;  box-shadow:none; height:21px; line-height:21px;}
+.select-btn-style1 .select-btn-style1-inner{ position:relative; height:23px; line-height:23px; padding-left:8px; padding-right:25px; border-radius: 3px;}
+.select-btn-style1:hover .select-btn-style1-inner{background:url(../images/new/select-btn-style1-hover-bg.png); color:#666666; border:1px solid #fff; height:19px; line-height:18px; padding-right:23px; padding-left:6px;}
+.select-btn-style1:hover .arrow-handle{right:-2px; top:-2px; }
+.select-btn-style1:hover .arrow-handle span{ background:url(../images/new/select-btn-style1-arrow-hover.png) no-repeat center; }
+.select-btn-style1:active .arrow-handle{background:url(../images/new/select-btn-style1-arrow-active.png); border-left:1px solid #95b4d1;}
+.select-btn-style1:active .arrow-handle span{ border:1px solid #fff; border-top-right-radius: 3px; border-bottom-right-radius: 3px;  height:19px; width:19px; line-height:19px;}

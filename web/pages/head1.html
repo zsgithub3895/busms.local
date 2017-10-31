@@ -1,0 +1,102 @@
+
+<link href="css/navigationmain.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="js/skin.js"></script>
+<div class="navigation-header">
+	<div class="w1024">
+	<div class="logo"></div>
+	<h2 class="sysName"></h2>
+	<div class="topmenu" id="topmenu">
+		<ul>
+		<li data-href="W.fire('showView',1)" data-access="privilege:MONITOR_ALL"><a href="#">监控页面</a></li>
+			<li data-href="W.fire('showView',2)" data-access="privilege:INTERFACE_ALL"><a href="#">接口管理</a></li>			
+			<li data-href="W.fire('showView',3)" data-access="privilege:BASIC_DATA"><a href="#">基础数据管理</a></li>
+			<li data-href="W.fire('showView',4)" data-access="privilege:SYSTEM_ALL"><a href="#">系统管理</a></li>
+			<li data-href="W.fire('showView',5)" data-access="privilege:RESULT_ALL"><a href="#">结果查询</a></li>
+			<li data-href="W.fire('showView',6)" data-access="privilege:POLICY_MANAGE"><a href="#">策略管理</a></li>
+		</ul>
+	</div>
+	<div class="btn-quite"><li class="logout" data-href="W.fire('user:logout');"><a>注销</a></li></div>
+	<div class="user"><span class="user_name" id="userName">...</span> 欢迎您！</div>
+	</div>
+</div>
+
+<script>
+W.on("showView","private",function(e,view){
+	var page ;
+	switch(view){
+	case 1 :
+		W.open('layouts/1-2',{left:'pages/layouts/monitor-setting',center:'layouts/tabs'});
+		page = 1;
+		//W.showToolbar(1);
+		break;
+	case 2 :
+		W.open('layouts/1-2',{left:'pages/layouts/interfacemanage',center:'layouts/tabs'});
+		page = 2;
+		//W.showToolbar(1);
+		break;
+	case 3 :
+		W.open('layouts/1-2',{left:'pages/layouts/business-setting.left',center:'layouts/tabs'});
+		page = 3;
+		W.showToolbar(1);
+		break;
+	case 4 :
+		W.open('layouts/1-2',{left:'security/system-manage-nav',center:'layouts/tabs'});
+		page = 4;
+		W.showToolbar(1);
+		break;
+	case 5 :
+		W.open('layouts/1-2',{left:'pages/layouts/resultCheck',center:'layouts/tabs'});
+		page = 5;
+		//W.showToolbar(1);
+		break;
+	case 6 :
+		W.open('layouts/1-2',{left:'pages/layouts/timeTask',center:'layouts/tabs'});
+		page = 6;
+		//W.showToolbar(1);
+		break;
+	}
+});
+// 直接展示页面监控
+W.fire('showView',1);
+
+W.showToolbar = function(state){
+	if(state==1)
+		W.$("topmenu").node.show();
+	else
+		W.$("topmenu").node.hide();
+}
+//获取用户的登录信息
+W.get("current-user").done(function(loginInfo){
+	W.$('userName').node.html(loginInfo.loginName);
+});
+
+W.on("openmenu", 'public', function(e,path){
+	W.open(path);
+});
+
+//用户登出
+W.on('user:logout', 'private', function(e) {
+	// 若为单点登录客户端，此处重定向到单点登录服务器注销页面
+	if (typeof SSOLogout != 'undefined') {
+		return SSOLogout();
+	}
+	W.update('logout').done(function() {
+		//用户登出时同时清空前端用户session信息
+		currentUser = {};
+		location.reload();
+		/* if (location.href.indexOf('#') != -1) {
+			location.href = location.href.substr(0,location.href.indexOf('#'));
+		} */
+	});	
+});
+
+//设置title
+$.ajax({
+	url: 'systemTitle.txt',
+	dataType: 'text',
+	success: function(data) {
+		$(".sysName").html(data); 
+	}
+});
+
+</script>

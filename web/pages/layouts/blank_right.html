@@ -1,0 +1,9 @@
+<div id="right_main" style="height: 100%"></div>
+<script>
+W.on("open", function(e, vars) {
+	if (W.is_array(vars)) {
+		vars = vars[0];
+	}
+	W.$("right_main").load('pages/layouts/page-right-tabs', vars);
+});
+</script>

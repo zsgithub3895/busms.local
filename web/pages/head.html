@@ -1,0 +1,61 @@
+<style> 
+.header{ background:url(images/new/header_bg_repeat.png) repeat-x; height:30px; font-family:"微软雅黑"}
+.header_bg{ background:url(images/new/header_bg.png) no-repeat; height:30px; padding-left:12px; position:relative; color:#fff;}
+.header_logo{ height:30px;}
+.header_logo .logo_name{ font:14pt ; color:#fff; text-shadow:1px 1px 1px #000000; font-weight:bold; height:30px; line-height:30px;}
+.header_menu_list{ text-align:right; height:30px; position:absolute; top:0px; right:0px; line-height:30px; padding-right:10px;}
+.header_menu_list > ul{ list-style:none; padding:0; margin:0; display: inline-block;}
+.header_menu_list > ul > li{ display:inline-block; color: #000; height: 24px; line-height: 24px;  border-radius: 3px;}
+.header_menu_list > ul > li .menu_text{ height:24px; line-height: 24px; border-radius: 3px; padding:0 10px;}
+.header_menu_list > ul > li:hover{ border:1px solid #2e5e92;  color: #000; height: 22px; line-height: 22px;}
+.header_menu_list > ul > li:hover .menu_text{ background: url("images/new/top_menu_hover.png"); padding:0 8px; height:20px; line-height: 20px; border:1px solid #bbd9f7;}
+.header_menu_list > ul > li:active .menu_text{ background: url("images/new/top_menu_active.png");}
+
+.header_menu_list span.welcome{ font: 8.75pt; color: #000; }
+.header_menu_list span.welcome .user_name{font: bold 12px; padding-left:5px; font-weight:bold; }
+.header_menu_list li.downmenu_handler{font: 9pt ; cursor:pointer;}
+
+
+.downmenu_handler .arrow_down_single{ vertical-align:middle; margin-left:4px;}
+.header_menu_list li.logout{font: 9pt ;text-decoration: none; cursor:pointer;}
+
+.tool_bar{ height:30px; background:#CEDFE9;}
+</style>
+ <div class="header">
+	<div class="header_bg">
+    	<div class="header_logo">
+    	<span class="logo_name"></span>
+        </div>
+        <div class="header_menu_list">
+        	<span class="welcome"><span class="user_name" id="userName">...</span> 欢迎您！</span>
+            <ul>                
+                <li class="logout" data-href="W.fire('user:logout');"><div class="menu_text">注销</div></li>
+            </ul>
+        </div>
+    </div>    
+</div>   
+
+<script language="javascript">
+
+//获取用户的登录信息
+W.get("current-user").done(function(loginInfo){
+	W.$('userName').node.html(loginInfo.loginName);
+});
+
+//用户登出
+W.on('user:logout', 'private', function(e) {
+	// 若为单点登录客户端，此处重定向到单点登录服务器注销页面
+	if (typeof SSOLogout != 'undefined') {
+		return SSOLogout();
+	}
+	W.update('logout').done(function() {
+		//用户登出时同时清空前端用户session信息
+		currentUser = {};
+		location.reload();
+		/* if (location.href.indexOf('#') != -1) {
+			location.href = location.href.substr(0,location.href.indexOf('#'));
+		} */
+	});	
+});
+
+</script>

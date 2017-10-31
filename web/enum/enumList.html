@@ -1,0 +1,67 @@
+<!-- @meta title="枚举值管理" icon="images/icon/icon_16_network.png" -->
+<h1 id="message"></h1>
+<form id="searchForm" data-form="column:2;">
+	<label>名称</label>
+	<input name="name" type="text" />
+	<label>标识</label>
+	<input name="code" type="text" />
+	<input type="submit" value="查询" class="w-form-query" />
+	<input type="submit" value="重置" class="w-form-clear" />
+</form>
+<div id="enumDiv" class="w-grid">
+<!-- <button title="新建" data-href="open('enum/enumEdit')"><img src="images/icons/add.png"></button>
+<button title="删除" data-href="transmit(W.$('enumDiv').grid.selected_rows('id')) -> ids|assert(ids.length,'至少选择一条记录！') -> confirm('删除枚举会将其子枚举一起删除！\n\n你确定要这样做么？') -> call(deleteEnums, ids)"> 
+<img src="images/icons/delect-01.png">
+</button>-->
+<table>
+<thead>
+  <tr>
+  	<th width="4%" class="w-grid-select"></th>
+	<th width="4%" class="w-grid-index">序号</th>
+  	<th width="30%">名称</th>
+  	<th width="31%">标识</th>
+  	<th width="31%">描述</th>
+  </tr>
+</thead>
+<tbody>
+  <tr class="w-row">
+  	<td><input name="id" type="hidden" /></td>
+  	<td></td>
+  	<td ><a name="name" data-href="open('enum/enumEdit', row.data().id)" /></td>
+    <td name="code"></td>
+    <td name="description"></td>
+  </tr>
+</tbody>
+</table>
+</div>
+<script>
+var isPositiveNum = function(s){
+	  var re = /^[0-9]*[1-9][0-9]*$/ ;  
+	  return re.test(s)  
+	}
+	var page =0;
+	W.$('enumDiv').on('grid:refresh', function(e, query_data, paginator) {
+		if(!isPositiveNum(paginator.pageSize)){
+			paginator.pageSize = 10;
+		}
+		W.get('enum?'+W.param(query_data)+'&pageBean='+paginator).done(function(data){
+		  	W.$('enumDiv').data(data);
+		});
+	}); 
+	
+	W.$('searchForm').form.query();
+	
+	W.on(['enumDiv:refresh',/enum\/deleteEnums\/.+:remove/,/enum:create/,/enum\/\d+:update/],'public',function(){
+		W.$('enumDiv').refresh();
+	});
+
+	var deleteEnums = function(ids){
+		W.remove('enum/deleteEnums/'+ids).done(function(flag){
+			if(flag){
+				W.alert('删除成功');
+			}else{
+				W.alert('删除失败');
+			}
+		});
+	};
+</script>

@@ -1,0 +1,40 @@
+<#ftl>
+<!-- @meta var="options" -->
+
+<div id="tabsId" data-layout="tabs" class="w-layouts-tabs">
+<#if options>
+<#list options.tabs as tab>
+	<div data-layout="path:{[options.tabs[${tab_index}], options.data]}" />
+</#list>
+</#if>
+</div>
+<!-- 为了屏蔽底层事件监听增加的div，请先勿删除 -->
+<div></div>
+
+<script>
+W.warn('过期的布局窗口layouts/tabs，使用data-layout="tabs"调用布局控件渲染代替');
+var indexCache = {};
+if(options && options.tabs){
+	for(var i=0; i < options.tabs.length; i++){
+		indexCache[options.tabs[i][0]] = i;
+	}
+}
+var index = 0;
+W.on("open",function(e,path){
+	var i = indexCache[path[0]];
+	if(i !== undefined){		
+		$tabsId.tabs.show(i);
+	}else{
+		$tabsId.fire("open",path);
+	}
+	e.stopPropagation();
+});
+W.on('tabs:open', function(e, tab) { 
+	indexCache[tab.path[0]] = tab.id;
+} );
+W.on('tabs:close', function(e, tab) { 
+	var path = tab.path;
+	delete indexCache[path[0]];
+} );
+
+</script>

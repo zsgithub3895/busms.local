@@ -1,0 +1,51 @@
+<!-- @meta  title="登录" -->
+<div id="background" style="position:absolute;z-index:0;width:100%;height:100%;top:0px;left:0px;"><img src="images/loginBg.png" width="100%" height="100%"/></div>
+<div class="container" id="seniorSearch">
+	<div class="title"></div>
+	<form id="loginForm" >
+		<input id="loginName" name="loginName" type="text" class="logininput userInput" placeholder="用户名" />
+		<input name="password" type="password" class="logininput pwInput" placeholder="密码" />
+		<input type="button" id="loginButton" class="loginButton" data-href=" W.$('loginForm').form.validate() -> loginData|update('login',loginData)"/>
+	</form>
+</div>
+
+
+<script>
+//设置title
+$.ajax({
+	url: 'systemTitle.txt',
+	dataType: 'text',
+	success: function(data) {
+		$(".title").html(data); 
+	}
+});
+
+W.$('loginName').fire('focus').fire('select');
+
+W.on('login:update','public', function(e,logged) {
+	var data = W.$("loginForm").data();
+	if (data.loginName == "") {
+		alert("请填写用户名！");
+		return;
+	} else if (data.password == "") {
+		alert("请填写密码！");
+		return;
+	}
+	if(logged){
+		W.fire("main:initAfer");
+	}else{
+		alert("登录失败，用户名或密码填写不正确！");
+	}
+});
+
+W.$('seniorSearch').on('keyup','private',function(event) {
+	var keyCode = event.keyCode ? event.keyCode
+			: event.which ? event.which : event.charCode;
+	if (keyCode == 13) {
+		var loginData = W.$("loginForm").data();
+		W.$('loginForm').form.validate();
+		W.update('login',loginData);
+	}
+});
+
+</script>

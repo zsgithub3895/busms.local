@@ -1,0 +1,54 @@
+@charset "utf-8";
+/* CSS Document */
+*{ margin:0; padding:0; font-family:微软雅黑;}
+body{ background:#ecf0f1;}
+/* welcomeBox */
+.welcomeBox{position:relative;width:870px; height:328px; margin:0 auto;}
+
+/*方格 */
+.content{position:absolute;background:#1abc9c;width:150px; height:124px;left:10px;top:60px;}
+.column{position:absolute;background:#2ecc71;width:150px; height:124px;left:180px;top:60px;}
+.templete{position:absolute;background:#3498db;width:150px; height:124px;left:350px;top:60px;}
+.system{position:absolute;background:#9b59b6;width:150px; height:124px;left:520px;top:60px;}
+.data{position:absolute;background:#34495e;width:150px; height:124px;left:690px;top:60px;}
+.task{position:absolute;background:#34495e;width:320px; height:150px;left:10px;top:220px;}
+
+/*方格-头 */
+.contentHead{position:absolute;background:#1abc9c;width:150px; height:62px;position:absolute;top:0px;}
+.columnHead{position:absolute;background:#2ecc71;width:150px; height:62px;position:absolute;top:0px;}
+.templeteHead{position:absolute;background:#3498db;width:150px; height:62px;position:absolute;top:0px;}
+.systemHead{position:absolute;background:#9b59b6;width:150px; height:62px;position:absolute;top:0px;}
+.dataHead{position:absolute;background:#34495e;width:150px; height:62px;position:absolute;top:0px;}
+.taskHead{position:absolute;background:#F39C11;width:40px; height:150px;position:absolute;top:0px;left:0px;}
+
+/*方格-尾*/
+.contentSub{ background:#16a085;width:150px; height:62px; display:inline-block; position:absolute;top:62px; position:relative;padding-top:8px}
+.columnSub{background:#27ae60;width:150px; height:62px; display:inline-block; position:absolute;top:62px; position:relative;padding-top:8px}
+.templeteSub{background:#2980b9;width:150px; height:62px; display:inline-block; position:absolute;top:62px; position:relative;padding-top:8px}
+.systemSub{background:#8e44ad;width:150px; height:62px; display:inline-block; position:absolute;top:62px; position:relative;padding-top:8px}
+.dataSub{background:#2c3e50;width:150px; height:62px; display:inline-block; position:absolute;top:62px; position:relative;padding-top:8px}
+.taskSub{background:#E67F22;width:280px; height:150px; display:inline-block; position:absolute;top:0px; position:relative;left:40px;}
+
+.taskSubCenter{background:#E67F22;width:249px; height:130px; display:inline-block; position:absolute;top:10px; position:relative;left:1px;overflow:auto;}
+
+.welcomeBox .content .contentHead a:hover{background:#139285;width:150px; height:64px; display:inline-block;cursor:pointer;}
+.welcomeBox .column .columnHead a:hover{background:#278e60;width:150px; height:64px; display:inline-block;cursor:pointer;}
+.welcomeBox .templete .templeteHead a:hover{background:#2660b9;width:150px; height:64px; display:inline-block;cursor:pointer;}
+.welcomeBox .system .systemHead a:hover{background:#6e309d;width:150px; height:124px; display:inline-block;cursor:pointer;}
+.welcomeBox .data .dataHead a:hover{background:#222e30;width:150px; height:124px; display:inline-block;cursor:pointer;}
+.welcomeBox .task .taskHead a:hover{background:#222e30;width:150px; height:124px; display:inline-block;cursor:pointer;}
+
+.welcomeBox .content .contentSub a:hover{background:#139285;width:150px; height:25px;display:inline-block;cursor:pointer;}
+.welcomeBox .column .columnSub a:hover{background:#278e60;width:150px; height:25px;display:inline-block;cursor:pointer;}
+.welcomeBox .templete .templeteSub a:hover{background:#2660b9;width:150px; height:25px;display:inline-block;cursor:pointer;}
+.welcomeBox .system .systemSub a:hover{background:#6e309d;width:150px; height:25px;display:inline-block;cursor:pointer;}
+.welcomeBox .data .dataSub a:hover{background:#222e30;width:150px; height:25px;display:inline-block;cursor:pointer;}
+.welcomeBox .task .taskSubCenter a:hover{background:#D45300;width:249px;height:25px;display:inline-block;cursor:pointer;}
+
+
+
+/*字体*/
+.tt{ color:#fff; font-size:18px; position:absolute; top:20px; left:18px;}
+.ttSub{ color:#fff; font-size:14px; position:absolute;left:18px;}
+.tTask{ color:#fff; font-size:20px; position:absolute; top:3px; left:3px;}
+

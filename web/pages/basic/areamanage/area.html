@@ -1,0 +1,103 @@
+<!-- @meta title="地区管理"  unique="true" icon="images/icons/portal_server_main.png" --> 
+<div id="seniorSearch"  style="margin-left:10px;margin-right:10px" >
+<form id="superSearchForm"  style="margin:4px 5px" >
+<fieldset data-fieldset="column:2">  
+<label>地区名称</label>
+    <input id="name" type="text" name="name">
+<label>地区CODE</label>
+    <input type="text" name="code" id="code"> 
+</fieldset>
+<input type="submit" value="查询" class="w-form-query" />    
+<input type="submit" value="重置" class="w-form-clear" id="clear"/>
+</form>  
+</div>   
+<div id="supersearch" class="w-grid" style="margin-top:10px" >
+<button title="新建" id="add" data-href="open('pages/basic/areamanage/add_area')"><img title="新建" src="images/icons/add.png"/></button>
+<button title="删除"  data-href="push(W.$('supersearch').selected_rows('id')) -> ids|assert(ids.length) -> confirm('是否删除 ' + ids.length + ' 条记录？') -> call(del, ids)"><img title="删除" src="images/icons/delect-01.png"/></button>	
+<button title="刷新" id="refreshbutton" ><img title="刷新" src="images/icons/refresh-01.png"/></button>
+<table style="width:100%">
+        <thead>
+            <tr>
+                   <th class="w-grid-select" width="4%"></th>
+                    <th width="24%">地区名称</th>
+                    <th width="24%">地区CODE</th>			  				   
+				    <th width="24%">通讯地址</th>				
+				    <th width="24%">描述信息</th>			
+				   		
+            </tr> 
+        </thead> 
+        <tbody> 
+            <tr>
+              	<td><input name="id" type="hidden"/>             
+				<td><a name="name" data-href="popup('pages/basic/areamanage/add_area',C('parent.id'))"/></td>
+                <td name="code"></td>
+                 <td name="postaddress"></td>
+                <td name="description"></td>
+               
+            </tr> 
+        </tbody> 
+    </table>
+</div>
+<script language="javascript">
+var isPositiveNum = function(s){//是否为正整数  
+    var re = /^[0-9]*[1-9][0-9]*$/ ;  
+    return re.test(s)  
+} 
+function checkStr(str){
+    var SpecialCharacters = "'!@#$%^&*\'/'";
+    for(var i=0;i<SpecialCharacters.length-1;i++){
+        if(str.indexOf(SpecialCharacters[i]) != -1){
+            return true;
+        }
+    }
+    return false;
+}
+//根据查询条件查询
+W.$('superSearchForm').query();
+W.$('supersearch').on('grid:refresh', function(e, query_data, paginator) {
+	if(!isPositiveNum(paginator.pageSize)){
+		paginator.pageSize = 10;
+	}
+	W.get('areaService?' + W.to_query_string(query_data) + '&pageBean=' + paginator).done(function(data) {
+		W.$('supersearch').data(data);
+	});
+});
+
+W.on(['areaService:create', 'areaService:update', 'areaService:remove'], 'public',function() {
+	W.$('supersearch').refresh();
+}); 
+
+
+//删除
+var del = function(ids){
+	W.get('areaService/areaUser/'+ids).done(function(data) {
+		//alert(data.flag);
+			if(data.flag){
+				W.alert(data.msg);
+			}else{
+				 W.remove('areaService', ids).done(function(callBackValue){
+					W.alert(callBackValue);
+				}); 
+			 }		
+		});
+}
+
+//刷新
+W.$('refreshbutton').on('click','private',function(e){
+	W.fire('form:qeury');
+});
+
+W.$('clear').on('click','private',function(e){	
+	W.$('searchPortalServer').data('');
+});
+
+var pendingRowChange = function(data, row) {
+	if(data && data.pStatus ==3){
+		 row.css("background-color","#ff7174");
+	}
+	if(data && data.pStatus ==1){
+		 row.css("background-color","#ff7174");
+	}
+	
+};
+</script>

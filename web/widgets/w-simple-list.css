@@ -1,0 +1,25 @@
+/* CSS Document */
+.w-simple-list{ padding:5px !important;}
+.row-delete{ cursor: pointer;}
+.w-simple-list-tbody{ margin:1px 0;}
+.w-simple-list-tbody td{ }
+
+.w-simple-list thead tr{
+    background: url("../images/new/grid-thead-bg.png") repeat scroll 0 0 transparent !important;
+    border-color: #c1c8d2 !important;
+    border-style: solid !important;
+    border-width: 1px 1px 1px !important;
+	height: 25px;
+    line-height: 25px;
+}
+.w-simple-list thead{ padding-bottom:5px;}
+.w-simple-list thead th{ border-left:1px solid #c1c8d2;font-weight:normal; }
+.w-simple-list thead th:first-child{ border-left:none; }
+
+.w-simple-list .w-simple-list-tbody td.notice{ background:#fff !important; padding:5px; height:28px !important;}
+.w-simple-list .w-simple-list-tbody td {border-right: none;}
+.w-simple-list .w-simple-list-tbody td:not(:first-child){border-left:1px dotted #DDDDDD;}
+.w-simple-list .w-simple-list-tbody .w-row-with-data{ background:#f5f5f5; border:none !important;  border-bottom:1px dotted #ddd !important; border-top:none !important; }
+
+.w-simple-list .w-simple-list-tbody .ui-state-highlight{ background:#ffffcb;}
+.w-simple-list .w-simple-list-tbody .w-row-with-data:nth-child(2n+1):not(.ui-state-highlight) {background-color: #e3effb;}

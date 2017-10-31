@@ -1,0 +1,444 @@
+<#ftl>
+<!-- @meta var="id" title="定时任务" icon="images/icon/icon_16_network.png" width="700px" height="420px"-->
+<form id="taskForm" data-form="column:2">		
+        <label>任务名称</label>
+	       <span name="task.description"></span>   	
+	    <label id="firsttd">任务类型</label>
+	       <span name="task.taskcode" id="secondtd"></span>	      
+	    <label>最后一次运行时间</label>
+	       <span name="task.lastruntime" date-format="yyyy-MM-dd HH:mm:ss"></span>
+	    <label>最后一次运行时长</label>
+	       <span><span name="task.duration"></span><span> 秒</span></span>
+	    <label>总运行次数</label>
+	       <span><span name="task.sequence"></span><span> 次</span></span>
+	    <label>当前任务状态</label>
+	       <span name="task.status" data-enum-lookup="lookup/taskStatusEnum"></span> 
+		<label>设置任务执行策略</label>
+			<input name="task.cronDesc" type="text" data-colspan="2" disabled/>
+		<label>任务启动频度</label>
+			<select id="taskUICAscheduleType" name="taskUIC.ascheduleType" data-select="resource:lookup/startupFrequencyEnum" data-colspan="2">
+			</select>
+		<div id="dropmsg0" class="dropmsg0" style="display:none">
+			<table class="w-form-columns">		
+				<tr>
+					<td class="w-form-label" width="20%"><label>间隔几天执行</label></td>
+					<td class="w-form-element" width="80%" colspan="3"><input name="taskUIC.dailydayOrWeekPeriod" type="text"/>天</td>
+				</tr>
+				<tr >
+					<td class="w-form-label" width="20%"><label>执行时刻</label></td>
+					<td class="w-form-element" width="80%" colspan="3">
+						<div data-colspan="2" >
+							<input id="dailyHour" type="text" style="width:8%;text-align:center;">&nbsp;时&nbsp;
+							<input id="dailyMinite" type="text" style="width:8%;text-align:center;">&nbsp;分&nbsp;
+							<input id="dailySecond" type="text" style="width:8%;text-align:center;">&nbsp;秒&nbsp;&nbsp;（24小时制）
+							<input name="taskUIC.dailyrunDayTime" type="hidden" />
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div id="dropmsg2" class="dropmsg2" style="display:none">
+			<table class="w-form-columns">			
+				<tr>
+					<td class="w-form-label" width="20%"><label>每月的几号执行</label></td>
+					<td class="w-form-element" width="80%" colspan="1">
+						 <input type="checkbox" name="taskUIC.monthlydayOrWeekPeriod" value="1" />1号&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						 <input type="checkbox" name="taskUIC.monthlydayOrWeekPeriod" value="2" />2号&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						 <input type="checkbox" name="taskUIC.monthlydayOrWeekPeriod" value="3" />3号&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						 <input type="checkbox" name="taskUIC.monthlydayOrWeekPeriod" value="4" />4号&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						 <input type="checkbox" name="taskUIC.monthlydayOrWeekPeriod" value="5" />5号&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						 <input type="checkbox" name="taskUIC.monthlydayOrWeekPeriod" value="6" />6号&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						 <input type="checkbox" name="taskUIC.monthlydayOrWeekPeriod" value="7" />7号&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						 <input type="checkbox" name="taskUIC.monthlydayOrWeekPeriod" value="8" />8号&nbsp;&nbsp;
+						 <br>
+						 <input type="checkbox" name="taskUIC.monthlydayOrWeekPeriod" value="9" />9号&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						 <input type="checkbox" name="taskUIC.monthlydayOrWeekPeriod" value="10" />10号&nbsp;&nbsp;&nbsp;&nbsp;
+						 <input type="checkbox" name="taskUIC.monthlydayOrWeekPeriod" value="11" />11号&nbsp;&nbsp;&nbsp;&nbsp;
+						 <input type="checkbox" name="taskUIC.monthlydayOrWeekPeriod" value="12" />12号&nbsp;&nbsp;&nbsp;&nbsp;
+						 <input type="checkbox" name="taskUIC.monthlydayOrWeekPeriod" value="13" />13号&nbsp;&nbsp;&nbsp;&nbsp;
+						 <input type="checkbox" name="taskUIC.monthlydayOrWeekPeriod" value="14" />14号&nbsp;&nbsp;&nbsp;&nbsp;
+						 <input type="checkbox" name="taskUIC.monthlydayOrWeekPeriod" value="15" />15号&nbsp;&nbsp;&nbsp;&nbsp;
+						 <input type="checkbox" name="taskUIC.monthlydayOrWeekPeriod" value="16" />16号&nbsp;&nbsp;
+						 <br>
+						 <input type="checkbox" name="taskUIC.monthlydayOrWeekPeriod" value="17" />17号&nbsp;&nbsp;&nbsp;&nbsp;
+						 <input type="checkbox" name="taskUIC.monthlydayOrWeekPeriod" value="18" />18号&nbsp;&nbsp;&nbsp;&nbsp;
+						 <input type="checkbox" name="taskUIC.monthlydayOrWeekPeriod" value="19" />19号&nbsp;&nbsp;&nbsp;&nbsp;
+						 <input type="checkbox" name="taskUIC.monthlydayOrWeekPeriod" value="20" />20号&nbsp;&nbsp;&nbsp;&nbsp;
+						 <input type="checkbox" name="taskUIC.monthlydayOrWeekPeriod" value="21" />21号&nbsp;&nbsp;&nbsp;&nbsp;
+						 <input type="checkbox" name="taskUIC.monthlydayOrWeekPeriod" value="22" />22号&nbsp;&nbsp;&nbsp;&nbsp;
+						 <input type="checkbox" name="taskUIC.monthlydayOrWeekPeriod" value="23" />23号&nbsp;&nbsp;&nbsp;&nbsp;
+						 <input type="checkbox" name="taskUIC.monthlydayOrWeekPeriod" value="25" />24号&nbsp;&nbsp;
+						 <br>
+						 <input type="checkbox" name="taskUIC.monthlydayOrWeekPeriod" value="25" />25号&nbsp;&nbsp;&nbsp;&nbsp;
+						 <input type="checkbox" name="taskUIC.monthlydayOrWeekPeriod" value="26" />26号&nbsp;&nbsp;&nbsp;&nbsp;
+						 <input type="checkbox" name="taskUIC.monthlydayOrWeekPeriod" value="27" />27号&nbsp;&nbsp;&nbsp;&nbsp;
+						 <input type="checkbox" name="taskUIC.monthlydayOrWeekPeriod" value="28" />28号&nbsp;&nbsp;&nbsp;&nbsp;
+						 <input type="checkbox" name="taskUIC.monthlydayOrWeekPeriod" value="29" />29号&nbsp;&nbsp;&nbsp;&nbsp;
+						 <input type="checkbox" name="taskUIC.monthlydayOrWeekPeriod" value="30" />30号&nbsp;&nbsp;&nbsp;&nbsp;
+						 <input type="checkbox" name="taskUIC.monthlydayOrWeekPeriod" value="31" />31号&nbsp;&nbsp;
+					</td>
+				</tr>
+				<tr>
+					<td class="w-form-label" width="20%"><label>哪几个月份执行</label></td>
+					<td class="w-form-element" width="80%" colspan="1">
+						<input type="checkbox" name="taskUIC.monthlymonthsEnum" value="1" />一月份&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="checkbox" name="taskUIC.monthlymonthsEnum" value="2" />二月份&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="checkbox" name="taskUIC.monthlymonthsEnum" value="3" />三月份&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="checkbox" name="taskUIC.monthlymonthsEnum" value="4" />四月份&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="checkbox" name="taskUIC.monthlymonthsEnum" value="5" />五月份&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="checkbox" name="taskUIC.monthlymonthsEnum" value="6" />六月份&nbsp;&nbsp;
+						<br>
+						<input type="checkbox" name="taskUIC.monthlymonthsEnum" value="7" />七月份&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="checkbox" name="taskUIC.monthlymonthsEnum" value="8" />八月份&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="checkbox" name="taskUIC.monthlymonthsEnum" value="9" />九月份&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="checkbox" name="taskUIC.monthlymonthsEnum" value="10" />十月份&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="checkbox" name="taskUIC.monthlymonthsEnum" value="11" />十一月份&nbsp;&nbsp;&nbsp;
+						<input type="checkbox" name="taskUIC.monthlymonthsEnum" value="12" />十二月份&nbsp;
+						<br>
+					</td>
+				</tr>
+				<tr>
+					<td class="w-form-label" width="20%"><label>执行时刻</label></td>
+					<td class="w-form-element" width="80%" colspan="3">
+						<div data-colspan="2" >
+							<input id="monthlyHour" type="text" style="width:8%;text-align:center;">&nbsp;时&nbsp;
+							<input id="monthlyMinite" type="text" style="width:8%;text-align:center;">&nbsp;分&nbsp;
+							<input id="monthlySecond" type="text" style="width:8%;text-align:center;">&nbsp;秒&nbsp;&nbsp;（24小时制）
+							<input name="taskUIC.monthlyrunDayTime" type="hidden" />
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div id="dropmsg3" class="dropmsg3" style="display:none">
+			<table class="w-form-columns">
+				<tr>
+					<td class="w-form-label" width="20%"><label>执行时刻</label></td>
+					<td class="w-form-element" width="80%" colspan="3">
+						<input name="taskUIC.onetimerunDayTime" type="text"  class="w-datetime-picker"/>(格式: yyyy-MM-dd HH:mm:ss)
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div id="dropmsg4" class="dropmsg4" style="display:none">
+			<table class="w-form-columns">	
+				<tr>
+					<td class="w-form-label" width="20%"><label>间隔时间</label></td>
+					<td class="w-form-element" width="80%" colspan="3"><input name="taskUIC.fixedrateperiod" type="text"/>(0&lt;间隔时间&lt;60)</td>
+				</tr>
+			</table>
+		</div>
+		<div id="dropmsg5" class="dropmsg5" style="display:none">
+			<table class="w-form-columns">		
+				<tr>
+					<td class="w-form-label" width="20%"><label>间隔时间</label></td>
+					<td class="w-form-element" width="80%" colspan="3"><input name="taskUIC.fixedratehourperiod" type="text"/>(0&lt;间隔时间&lt;24)</td>
+				</tr>
+			</table>
+		</div>	 
+	<button data-icon="circle-plus" data-href="call(pause)">暂停</button>
+	<button data-icon="circle-plus" data-href="call(restart)">重启</button>
+	<input type="submit" value="返回" class="w-operate-query" data-href="close();" />
+	<button data-icon="circle-plus" data-href="form.validate() -> content|call(modifyTime,content)">修改执行时间</button>
+</form>
+<script>
+	var removeStyle = function(value){
+		var dropmsg = ".dropmsg"+value;
+		$(dropmsg).show();
+	}
+	
+	var addAllStyle = function(){
+		for(var i=0;i<6;i++){
+			var dropmsg = ".dropmsg"+i;
+			$(dropmsg).hide();
+		}
+	}
+	
+	var getTaskById = function(id){
+		W.get('taskScheduler/'+id).done(function(result) {
+			W.$('taskForm').data(result);
+			var mdwp = result.taskUIC.monthlydayOrWeekPeriod;
+			var mlme = result.taskUIC.monthlymonthsEnum;
+			$('input[type="checkbox"][name="taskUIC\\.monthlydayOrWeekPeriod"]').each(function() {			
+				var value = $(this).val();
+				var boo = false;
+				if (mdwp) {
+					$.each(mdwp, function(i, n){ 
+			             if(n==value){
+			            	 boo = true;
+			             }
+			        });
+				}
+				if(!boo){
+					$(this).removeAttr("checked");
+				}
+			});
+			$('input[type="checkbox"][name="taskUIC\\.monthlymonthsEnum"]').each(function() {
+				var value = $(this).val();
+				var boo = false;
+				if (mlme) {
+					$.each(mlme, function(i, n){ 
+			             if(n==value){
+			            	 boo = true;
+			             }
+			        });
+				}
+				if(!boo){
+					$(this).removeAttr("checked");
+				}
+			});
+			var ascheduleType =  result.taskUIC.ascheduleType;
+			if(ascheduleType == 0){
+				var cronString = $('input[type="hidden"][name="taskUIC\\.dailyrunDayTime"]').val();
+				var time = cronString.split(":");
+				$dailyHour.data(time[0]);
+				$dailyMinite.data(time[1]);
+				$dailySecond.data(time[2]);
+			}else if(ascheduleType == 2){
+				var cronString = $('input[type="hidden"][name="taskUIC\\.monthlyrunDayTime"]').val();
+				var time = cronString.split(":");
+				$monthlyHour.data(time[0]);
+				$monthlyMinite.data(time[1]);
+				$monthlySecond.data(time[2]);
+			}
+			removeStyle(ascheduleType);
+		});
+	}
+	getTaskById(id);
+	
+	$taskUICAscheduleType.on('change','public',function(){
+		  var value = W.$('taskUICAscheduleType').data();
+		  addAllStyle();
+		  removeStyle(value);
+		  initValue();
+	});
+	var initValue = function(){
+		$('[name="taskUIC\\.dailydayOrWeekPeriod"]').val("");
+		$('[name="taskUIC\\.dailyrunDayTime"]').val("");
+		$('input[type="checkbox"][name="taskUIC\\.monthlydayOrWeekPeriod"]').each(function() {
+				$(this).removeAttr("checked");
+		});
+		$('input[type="checkbox"][name="taskUIC\\.monthlymonthsEnum"]').each(function() {
+				$(this).removeAttr("checked");
+		});
+		$('[name="taskUIC\\.monthlyrunDayTime"]').val("");
+		$('[name="taskUIC\\.onetimerunDayTime"]').val("");
+		$('[name="taskUIC\\.fixedrateperiod"]').val("");
+		$('[name="taskUIC\\.fixedratehourperiod"]').val("");
+	}
+	
+	var validCronString = function(content){
+		if(content.taskUIC.ascheduleType=='0'){//每天
+			var dow = content.taskUIC.dailydayOrWeekPeriod;
+			if(dow==""||dow=="0"){
+				W.alert("请输入间隔几天执行");
+				return false;
+			}else{
+				if(!isNumber(dow)){
+					alert("请输入间隔几天执行");
+					return false;
+				}
+			}
+			dow = content.taskUIC.dailyrunDayTime;
+			if(!isHMS(dow)){
+				W.alert("请输入正确的执行时刻");
+				return false;
+			}			
+		}else if(content.taskUIC.ascheduleType==2){//每月
+			if(content.taskUIC.monthlydayOrWeekPeriod==undefined){
+				W.alert("请输入几号执行");
+				return false;
+			}
+			if(content.taskUIC.monthlymonthsEnum==undefined){
+				W.alert("请输入几月执行");
+				return false;
+			}
+			var wdt = content.taskUIC.monthlyrunDayTime;
+			if(!isHMS(wdt)){
+				W.alert("请输入正确的执行时刻");
+				return false;
+			}
+			if((content.taskUIC.monthlydayOrWeekPeriod+"").indexOf(',')==-1){
+				content.taskUIC.monthlydayOrWeekPeriod =[ content.taskUIC.monthlydayOrWeekPeriod ];
+			}
+			if((content.taskUIC.monthlymonthsEnum+"").indexOf(',')==-1){
+				content.taskUIC.monthlymonthsEnum =[ content.taskUIC.monthlymonthsEnum ];
+			}
+		}else if (content.taskUIC.ascheduleType=='3'){	
+			var dow = content.taskUIC.onetimerunDayTime;
+			if(dow=="" || dow=="0" || dow.indexOf('-')==-1 || dow.indexOf(':')==-1 || dow.indexOf(' ')==-1 ){
+				W.alert("请输入正确的执行时刻");
+				return false;
+			}else{	
+				var dddd = dow.split(" ");
+				if(!isYMD(dddd[0])){
+					W.alert("请输入正确的执行时刻");
+					return false;
+				}			
+				if(!isHMS(dddd[1])){
+					W.alert("请输入正确的执行时刻");
+					return false;
+				}	
+			}
+		}else if (content.taskUIC.ascheduleType=='4'){
+			var dow = content.taskUIC.fixedrateperiod;
+			if(dow==""){
+				W.alert("请输入正确的间隔时间");
+				return false;
+			}else{				
+				if(!isNumber(dow)){
+					W.alert("请输入正确的间隔时间");
+					return false;
+				}
+				if(dow>=60 || dow<=0){
+					W.alert("请输入正确的间隔时间");
+					return false;
+				}
+			}			
+		}else if (content.taskUIC.ascheduleType=='5'){
+			var dow = content.taskUIC.fixedratehourperiod;
+			if(dow==""){
+				W.alert("请输入正确的间隔时间");
+				return false;
+			}else{				
+				if(!isNumber(dow)){
+					W.alert("请输入正确的间隔时间");
+					return false;
+				}
+				if(dow>=24 || dow<=0){
+					W.alert("请输入正确的间隔时间");
+					return false;
+				}
+			}			
+		}
+		
+		return true;
+	}
+	var modifyTime = function(content){
+		
+		var ascheduleType =  $taskUICAscheduleType.node.val();
+		var hour;
+		var minite;
+		var second;
+		if(ascheduleType == 0){
+			hour = $dailyHour.node.val();
+			minite = $dailyMinite.node.val();
+			second = $dailySecond.node.val();
+		}else if(ascheduleType == 2){
+			hour = $monthlyHour.node.val();
+			minite = $monthlyMinite.node.val();
+			second = $monthlySecond.node.val();
+		}
+		if(hour == null || hour == 0){
+			hour = "00";
+		}
+		if(minite == null || minite == 0){
+			minite = "00";
+		}
+		if(second == null || second == 0){
+			second = "00";
+		}
+		var time = hour+":"+minite+":"+second;
+		if(ascheduleType == 0){
+			content.taskUIC.dailyrunDayTime = time;
+		}else if(ascheduleType == 2){
+			content.taskUIC.monthlyrunDayTime = time;
+		}
+		if(!validCronString(content)){
+			return;
+		}
+		W.create('taskScheduler/modifyTaskRunTime/'+id,content).done(function(){
+			getTaskById(id);
+			W.alert("修改执行时间成功!");
+		});
+	}
+	var pause = function(){
+		var ids = [
+		      id
+		]
+		W.create('taskScheduler/pause',ids).done(function(result) {
+			W.alert("暂停成功!");
+		});
+	}
+	var restart = function(){
+		var ids = [
+			id
+		]
+		W.create('taskScheduler/restart',ids).done(function(result) {
+			W.alert("重启成功!");
+		});
+	}
+		
+	//=============================================//
+	//evalute whether it is a correct hh:mm:ss time
+	function isHMS(hms){
+		if(hms.indexOf(":")==-1){	
+			return false;		
+		}
+		var ss = hms.split(":");
+		if(ss.length>3){	
+			return false;
+		}		
+		if(vd(ss[0],"0","23")){
+			if(vd(ss[1],"0","59")){
+				if(ss.length==3){
+					if(!vd(ss[2],"0","59")){
+						return false;
+					}
+				}
+			}else{
+				return false;
+			}
+		}else {
+			return false;
+		}
+		return true;
+	}
+	function isYMD(ymd){
+		if(ymd.indexOf("-")==-1){	
+			return false;		
+		}
+		var ss = ymd.split("-");		
+		if(vd(ss[0],"2005","3000")){
+			if(vd(ss[1],"1","12")){				
+				if(!vd(ss[2],"1","31")){
+					return false;
+				}
+				
+			}else{
+				return false;
+			}
+		}else {
+			return false;
+		}
+		return true;
+	}
+
+	// evalute if some number is number and it is between correct range
+	function vd(str,min,max,item){		
+			if(isNumber(str)){			
+				var num = new Number(str);
+				//alert(typeof(num));
+				if(num<min || num>max){	
+					return false;	
+				}
+			}else{
+				return false;
+			}
+		return true;
+	}
+	// evaluate if a str is a num
+	function isNumber(str){
+		var re = /^\d+$/g;
+		if(!re.test(str)){
+			return false;	
+		}
+		return true;
+	}	
+	
+	var changeWidth = function(){
+		$($firsttd.node.parent()).attr('width','15%');
+		$($secondtd.node.parent()).attr('width','40%');	
+	};
+	changeWidth();
+</script>

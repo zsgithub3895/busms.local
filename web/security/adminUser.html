@@ -1,0 +1,45 @@
+<#ftl>
+<!-- @meta var="node" title="用户管理" icon="images/icon/icon_16_network.png" unique="true" -->
+<div>
+<form id="userForm" data-form="column:2" style="margin:0px 0px 4px" >
+<input type="hidden" name="id"> 
+	<label>登录名称</label>
+	<input name="loginName"  type="text"  readonly="readonly"/>
+	<label>真实名称</label>
+	<input data-validate-exp="not_empty+len[1,20]" name="name" type="text" class="w-required" />
+    <label>状态</label>
+	<select name="status" disabled="disabled">
+    	<option value="1">正常</option>
+        <option value="2">锁定</option>
+    </select>
+	<label>密码</label>
+	<input name="password" type="password" <#if !node>class="w-required"  data-validate-exp="not_empty"</#if> />
+    <label>创建时间</label>
+	<input name="createTime" type="text" readonly="readonly"/>
+    <label>最后登录时间</label>
+	<input name="lastLoginTime" type="text" readonly="readonly" />
+	<label>角色绑定</label>
+	<select name="roleIds" multiple="multiple" data-select="resource:roles; text:name; value:id" class="w-select-multiple" disabled="disabled">
+    </select>
+	<input type="submit" value="更新" class="w-window-button" data-href="W.updateUser();" />
+	<input type="submit" value="返回" class="w-window-button" data-href="close()" />
+</form>
+</div>
+
+<script type="text/javascript">
+
+if(node){
+	W.get('user/'+node.id).done(function(user){
+     W.$('userForm').data(user);
+   });
+}
+
+W.updateUser = function(){
+	W.$('userForm').validate().done(function(user){
+        W.update('user/' + user.id, user).done(function(){
+             W.close();
+          });
+	});
+}
+
+</script>

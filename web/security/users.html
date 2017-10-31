@@ -1,0 +1,138 @@
+<!-- @meta title="用户管理" icon="images/icon/icon_16_computer.png" unique="true" -->
+<form id="searchForm" data-form="title:用户管理; column:2">
+	<label for="searchName">真实名称</label>
+	<input id="searchName" name="searchName" type="text"  data-validate-exp="not_char['!@#$%^&*(),.<>?;:[]{}\'/+-_']"/>
+	<label style="display:none;" id="loginNameLab">登录名称</label>
+	<input data-validate-exp="len[1,20]" name="loginName" id="loginName" type="text" style="display:none;" />
+    <label style="display:none;" id="statusLab">状态</label>
+	<select name="status" id="status" style="display:none;">
+		<option value="0">全部</option>
+    	<option value="1">正常</option>
+        <option value="2">锁定</option>
+    </select>
+    <label id="cityIdLab" style="display:none;">所属地区</label>
+	 <select name="cityId" id="cityId"  data-select="resource:lookup/belongCity" style="display:none;">
+	<option value="0">全部</option>
+	</select>
+	<input type="submit" value="查询" class="w-form-query" />
+	<input type="submit" value="重置" class="w-form-clear" />	
+</form>
+<div id="users" class="w-grid" style=" margin-top:1px;">
+	
+	<table style="width:100%;table-layout:fixed" id="userGird">
+		<thead>
+			<tr>
+				<th width="4%" class="w-grid-select"></th>
+				<th width="20%">用户名</th>
+				<th width="20%">真实名称</th>
+                <th width="25%">最后登录</th>
+				<th width="16%">状态</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr >
+				<td ><input name="id" type="hidden" /><input name="isAdmin" type="hidden" /></td>
+				<td name="loginName" ></td>
+				<td name="name" ></td>
+				<td name="lastLoginTime"></td>
+				<td><input type="submit" name="status" class="w-enum" data-enum="1:锁定; 2:解锁" data-href="fire('advuser:lock', C('parent.id'), C('parent.loginName'), C('this'))" /></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<div style="text-align:center; padding-top:10px;"><button id="create" data-icon="circle-plus" style="padding:3px 18px;" data-href="open('security/user')">新建</button>
+	<button id="remove" data-icon="circle-minus" style="padding:3px 18px;" data-href="push(W.$('users').selected_rows('id')) -> ids|assert(ids.length,'至少选择一条记录！') -> confirm('是否删除 ' + ids.length + ' 条记录？') -> call(deleteUser,ids);">删除</button>	</div>
+<script>
+W.fire('form:qeury');
+W.on('form:qeury','private',function(e){
+	  isRefreshByHand = true ;
+	  W.$('searchForm').form.query();
+});
+W.on(['user:create', /user\/\d+:update/, 'users:remove'], 'public', function() {
+	W.$('users').refresh();
+});
+
+// 双击编辑
+W.$("userGird").on('grid:edit-row', function(e, data) {
+	if(data.loginName == 'admin'){
+	    W.open('security/adminUser',data);
+	}else{
+		W.open('security/user',data);
+	}
+});
+
+var isPositiveNum = function(s){
+	  var re = /^[0-9]*[1-9][0-9]*$/ ;  
+	  return re.test(s)  
+	}
+
+function checkStr(str){
+    var SpecialCharacters = "'!@#$%^&*(),.<>?;:[]{}\'/+-_'";
+    for(var i=0;i<SpecialCharacters.length-1;i++){
+        if(str.indexOf(SpecialCharacters[i]) != -1){
+            return true;
+        }
+    }
+    return false;
+}
+//处理用户列表的刷新
+W.$('users').on('grid:refresh', function(e, query_data, paginator) {
+	var W = this;
+	var name =query_data.searchName;
+	if(!isPositiveNum(paginator.pageSize)){
+		paginator.pageSize = 10;
+	}
+	if(name && checkStr(name)){
+		W.alert("名称不能包含非法字符！");
+		return;
+	}else{
+	W.get('ngUsers/' + query_data.searchName + '/'+ query_data.loginName +'/'+ query_data.status+'/'+ query_data.cityId+'?' + paginator).done(function(users) {
+		W.data(users);
+	});
+	}
+});
+
+W.$('users').on('grid:update-row', function(e, user) {
+	W.update('user/' + user.id, user);
+});
+
+//删除操作
+var deleteUser = function(ids){
+	  var W = this;
+	  var users = W.$('users').selected_rows();
+	  if (users && users.length > 0) {
+	    $.each(users,function(i,user){
+	      if(user.loginName == 'admin'){
+	        W.alert('admin 用户不可以删除');
+	        return ;
+	      }
+	      //ids.push(user.id);
+	    });
+	    if(ids && ids.length > 0){	     
+	        W.remove('ngUser',ids).done(function(callBackValue){
+				W.alert(callBackValue);
+				W.fire('form:qeury');
+			});
+	    }
+	  }else{
+	    W.alert('请至少选择一个用户进行删除');
+	  }
+}
+
+// 用户的锁定与解锁
+W.on('advuser:lock', function(e, id, name, status) {
+	if(name == 'admin'){
+        W.alert('admin 用户不可以被锁定');
+        return ;
+	}
+	if (status == 1) {
+		W.update('user/lock/' + id).done(function() {
+			W.$(e.target).data(2);
+		});
+	} else {
+		W.update('user/unlock/' + id).done(function() {
+			W.$(e.target).data(1);
+		});
+	}
+});
+</script>

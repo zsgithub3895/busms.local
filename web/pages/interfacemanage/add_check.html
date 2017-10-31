@@ -1,0 +1,79 @@
+<#ftl>
+<!-- @meta var="id,saveHandler,updateHandler" title="校验信息" icon="images/icon/icon_16_network.png" -->
+<form id="superSearchForm" data-form="title:校验信息;column:1" >
+	<#if id>
+	    <input id="id" name="id" type="hidden"/>
+	    <label>策略名称：</label>
+	    <input id="strategyName" name="strategyName" type="text"  maxlength="64" class="w-required" data-validate-exp="not_char['!@#$%^&*(),.<>?;:[]{}\'/+-_']"/>
+	    <label>策略CODE：</label>	
+	    <input id="strategyCode" name="strategyCode" type="text" maxlength="32" class="w-required" data-validator="message:策略编号必须唯一且不能为空;method:validate_updatecode;" readonly="readonly"/>    	  	 
+	    <label>校验节点：</label>  
+	     <input id="checkCode"  class="w-required" name="checkCode" type="text" maxlength="150" placeholder="格式：ROOT/NODE1/NODE2/..." title="样例：<xml><a><b>XXX</b></a></xml>报文的b节点配置为：xml/a/b" />  	  
+	    <label>校验规则：</label>  
+	    <select name="checkRule" data-select="resource:lookup/checkRuleEnum"/>	  	     
+	    <label>校验值：</label>  
+	    <input id="ruleValue" name="ruleValue" type="text"  maxlength="64" class="w-required"/>
+	   	<input type="submit" value="更新"  data-href="W.$('superSearchForm').validate()->superSearchForm,date|call(updateHandler,superSearchForm)"/>
+	    <input type="submit" value="返回" data-href="close()" />
+</form>
+    <#else> 	
+        <label>策略名称：</label>	  
+	    <input id="strategyName" name="strategyName" type="text"  maxlength="64" class="w-required" data-validate-exp="not_empty+len[0,100]"/>    
+	    <label>策略CODE：</label>
+	    <input id="strategyCode" name="strategyCode" type="text" maxlength="64" class="w-required" data-validator="message:策略编号必须唯一且不能为空;method:validate_code;"/>	 	    
+	    <label>校验节点：</label>  
+	    <input id="checkCode"  class="w-required" name="checkCode" type="text" maxlength="150" placeholder="格式：ROOT/NODE1/NODE2/..." title="样例：<xml><a><b>XXX</b></a></xml>报文的b节点配置为：xml/a/b" />	  	  
+	    <label>校验规则：</label>  
+	    <select name="checkRule" data-select="resource:lookup/checkRuleEnum"/>		  	  
+	    <label>校验值：</label> 
+	    <input id="ruleValue" name="ruleValue" type="text" class="w-required" data-validate-exp="not_empty+len[0,50]"/>
+        <input type="submit" value="新建" data-href="W.$('superSearchForm').validate()-> superSearchForm|call(saveHandler,superSearchForm)" />
+        <input type="submit" value="返回" data-href="close()" />
+ </form>
+	</#if>
+<script>
+ if(id){
+	W.get('checkService/id?id='+id).done(function(message) {
+		W.$('superSearchForm').data(message);
+	});
+} 
+ var checkmoney=function(value){
+	    var re=/^(\+)?((\.)(\d){1,2}|(\d){1,6}(\.)(\d){1,2}|(\d){1,6})$/;
+	    return re.test(value);
+	}
+var saveHandler=function(superSearchForm){
+		W.create('checkService',superSearchForm).done(function(callBackValue){
+			W.$('superSearchForm').close();
+			W.alert(callBackValue);
+		});
+	}
+
+var updateHandler=function(superSearchForm){ 
+	W.update('checkService',superSearchForm).done(function(callBackValue){
+		W.$('superSearchForm').close();
+		W.alert(callBackValue);
+	});
+}
+
+var validate_updatecode = function(value,continuation){
+	W.get('checkService/updateCode?id='+id+'&strategyCode='+encodeURIComponent(value)).done(function(result) {
+		if(result){
+			continuation(result);
+			}
+		else{
+			continuation("策略CODE必须唯一且不能为空");
+			} 
+		}); 
+	}
+	
+	
+var validate_code = function(value,continuation){
+		W.get('checkService/check?strategyCode='+encodeURIComponent(value)).done(function(result) {
+			if(result){
+				continuation(result);
+				}
+			else{
+				continuation("策略CODE必须唯一且不能为空");
+				} }); 
+		}
+</script>

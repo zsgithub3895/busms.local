@@ -1,0 +1,36 @@
+<!-- @meta var="enumId,enumItemId" title="枚举值编辑" icon="images/icon/icon_16_network.png" -->
+<form id="enumItemForm" data-form="column:2;" >
+	<label>名称</label>
+	<input id="value" name="name" type="text"  class="w-required" data-validate-exp="not_empty+len[0,64]+not_char['!@#$%^&*(),.<>?;:[]\'{}\\/']"/>
+	<label>编码值</label>
+	<input id="code" name="code" readonly="readonly" type="text" class="w-required" data-validate-exp="not_empty+len[0,64]+not_char['!@#$%^&*(),.<>?;:[]\'{}\\/']"  placeholder="不能超过64个字符"/>
+	<label>序号</label>
+	<input id="sortIndex" name="sortIndex" type="text" class="w-required" data-validator="message:必填且数字不能超过8位数; pattern:^\d{1,8}$" placeholder="必填且数字不能超过8位数"/>
+	<label>说明</label>
+	<textarea name="description" id="description" data-validator="message:不多于64字符; pattern:^.{0,64}$" placeholder="不多于64字符"></textarea>
+	<input type="hidden" name="id" id="id"  />
+	<input type="hidden" name="parentid" id="parentid"  />
+	<input type="hidden" name="enumId" id="enumId"  />
+	<input type="hidden" name="status"/>
+	<input type="hidden" name="readonly" id="readonly"/>
+	<input id="readOnlySearchButton" class="w-operate-query" type="submit" value="修改" data-href="form.validate()->enumForm|call(updateHandler,enumForm)"/>
+    <input id="readOnlyClearButton" class="w-operate-query" type="submit" value="返回"  data-href="W.open('enum/enumEdit',enumId);"/>
+</form>
+<script>
+if(enumItemId){
+	W.get('enumItem/'+enumItemId).done(function(message) {
+		W.$('enumItemForm').data(message);
+	});
+} 
+
+var updateHandler=function(enumForm){
+	if(enumItemId){
+		W.update('enumItem/'+enumItemId,enumForm).done(function(callBackValue){
+			W.alert('更新成功');
+			W.fire('subEnumDiv:refresh');
+			W.close();
+		});
+	}
+}
+
+</script>

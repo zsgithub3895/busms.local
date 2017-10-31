@@ -1,0 +1,87 @@
+<!-- @meta title="结果信息"  unique="true" icon="images/icons/portal_server_main.png" -->
+<div id="seniorSearch" title="结果信息" style="margin-left:10px;margin-right:10px" >
+<form id="superSearchForm"  style="margin:4px 5px" >
+<fieldset data-fieldset="column:2">  
+	<label>所属地市</label>
+	<select id="cityCode" name="cityCode" data-select="resource:lookup/cityCode" disabled="disabled" ><option value="0">全部</option></select>
+	<label>接口类型</label>
+	<select id="interfaceType" name="interfaceType" data-select="resource:lookup/interfaceVarityEnum"><option value="0">全部</option></select> 
+    <label>接口名称</label>
+    <input type="text" name="interfaceName"></input>
+    <label>报文正确性</label>
+    <select id="respCorrect" name="respCorrect">
+        <option value="0">异常</option>
+        <option value="1">正常</option>
+    </select>
+    <label>开始时间</label>
+    <input type="text" id="beginTime" name="beginTime" class="w-datetime-picker"/>
+    <label>结束时间</label>
+    <input type="text" id="endTime" name="endTime" class="w-datetime-picker"/>
+</fieldset>
+	<input type="submit" value="查询" class="w-form-query" />    
+	<input type="submit" value="重置" class="w-form-clear" id="clear"/>
+	</form>  
+	</div>   
+	<div id="supersearch" class="w-grid" style="margin-top:10px" >
+	<button title="刷新" id="refreshbutton" ><img title="刷新" src="images/icons/refresh-01.png"/></button>
+	<table style="width:100%">
+        <thead>
+            <tr>
+                   <th class="w-grid-select" width="10%"></th>
+				   <th width="30%">所属地市</th>
+				   <th width="30%">接口类型</th>
+				   <th width="30%">接口名称</th>
+				   <th width="30%">延时（ms）</th>
+				   <th width="30%">记录时间</th>
+            </tr> 
+        </thead> 
+        <tbody> 
+            <tr>
+              	<td><input name="id" type="hidden"/>
+				<td name="cityCode" data-enum-lookup="lookup/cityCode"></td>
+                <td name="interfaceType" data-enum-lookup="lookup/interfaceVarityEnum"></td>
+                <td name="interfaceName"></td>
+                <td name="delay"></td>
+                <td name="sentTime"></td>
+        </tbody> 
+    </table>
+</div>
+<script language="javascript">
+
+
+
+//打开界面自动刷新并产生（grid，refresh）时间
+//W.fire('form:qeury');
+
+W.on('form:qeury','private',function(e){
+	  isRefreshByHand = true ;
+	  W.$('superSearchForm').form.query();
+});
+
+W.$('refreshbutton').on('click','private',function(e){
+	W.fire('form:qeury');
+});
+
+var isPositiveNum = function(s){
+	  var re = /^[0-9]*[1-9][0-9]*$/ ;  
+	  return re.test(s)  
+	}
+//获取
+W.$('supersearch').on('grid:refresh', function(e, query_data, paginator) {
+	if(!isPositiveNum(paginator.pageSize)){
+		paginator.pageSize = 10;
+	}
+	W.get('DataRecordHistoryService?' + W.to_query_string(query_data) + '&pageBean=' + paginator).done(function(data) {
+		W.$('supersearch').data(data);
+	});
+});
+ W.get("ngUser/currentuser").done(function(cityCode){
+
+	if(cityCode==0){
+	    	W.$("cityCode").removeAttr("disabled")
+	    }else{
+				W.$("cityCode").data(cityCode);
+	    }
+}) 
+ 
+</script>

@@ -1,0 +1,77 @@
+<#ftl>
+<!-- @meta var="id,saveHandler,updateHandler" title="编辑地区信息" icon="images/icon/icon_16_network.png" -->
+<form id="superSearchForm" data-form="title:地区信息;column:1" >
+	<#if id>
+	    <input id="id" name="id" type="hidden"/>
+	     <label>地区名称：</label>
+	    <input id="name" name="name" type="text"  class="w-required" data-validate-exp="not_empty+len[0,100]"/>
+	    <label>地区CODE：</label>	
+	    <input id="code" name="code" type="text" maxlength="32" class="w-required" data-validator="message:地区编号必须唯一且不能为空;method:validate_updatecode;" readonly="readonly"/>	   
+	    <label>通讯地址：</label>
+	    <input id="postaddress" name="postaddress" type="text" class="w-required" data-validate-exp="not_empty+url+len[0,100]"/>		  
+	    <label>描述信息：</label>
+	    <input id="description" name="description" type="text"  data-validate-exp="empty|len[0,480]"/>
+	   	<input type="submit" value="更新"  data-href="W.$('superSearchForm').validate()->superSearchForm,date|call(updateHandler,superSearchForm)"/>
+	    <input type="submit" value="返回" data-href="close()" />
+</form>
+    <#else> 
+        <label>地区名称：</label>
+	    <input id="name" name="name" type="text" class="w-required" data-validate-exp="not_empty+len[0,100]"/>
+	    <label>地区CODE：</label>
+	    <input id="code" name="code" type="text" maxlength="32" class="w-required" data-validator="message:地区编号必须唯一且不能为空;method:validate_code;"/>   
+	     <label>通讯地址：</label>
+	    <input id="postaddress" name="postaddress" type="text" class="w-required" data-validate-exp="not_empty+url+len[0,100]"/>	
+	    <label>描述信息：</label>
+	    <input id="description" name="description" type="text"  data-validate-exp="empty|len[0,480]"/>  
+	   	
+        <input type="submit" value="新建" data-href="W.$('superSearchForm').validate()-> superSearchForm|call(saveHandler,superSearchForm)" />
+        <input type="submit" value="返回" data-href="close()" />
+ </form>
+	</#if>
+<script>
+
+ if(id){
+	W.get('areaService/id?id='+id).done(function(message) {
+		W.$('superSearchForm').data(message);
+	});
+} 
+ var checkmoney=function(value){
+	    var re=/^(\+)?((\.)(\d){1,2}|(\d){1,6}(\.)(\d){1,2}|(\d){1,6})$/;
+	    return re.test(value);
+	}
+var saveHandler=function(superSearchForm){
+		W.create('areaService',superSearchForm).done(function(callBackValue){
+			W.$('superSearchForm').close();
+			W.alert(callBackValue);
+		});
+	}
+
+var updateHandler=function(superSearchForm){ 
+	W.update('areaService',superSearchForm).done(function(callBackValue){
+		W.$('superSearchForm').close();
+		W.alert(callBackValue);
+	});
+}
+
+var validate_updatecode = function(value,continuation){
+	W.get('areaService/updateCode?id='+id+'&code='+encodeURIComponent(value)).done(function(result) {
+		if(result){
+			continuation(result);
+			}
+		else{
+			continuation("地区编码必须唯一且不能为空");
+			} 
+		}); 
+	}
+	
+	
+var validate_code = function(value,continuation){
+		W.get('areaService/areaCode?code='+encodeURIComponent(value)).done(function(result) {
+			if(result){
+				continuation(result);
+				}
+			else{
+				continuation("地区编号必须唯一且不能为空");
+				} }); 
+		}
+</script>

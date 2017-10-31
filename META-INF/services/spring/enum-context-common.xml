@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<bean id="enumerationManager"
+		class="com.sihuatech.basicdata.enums.enums.manager.EnumerationManager">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="enumItemManager"
+		class="com.sihuatech.basicdata.enums.enums.manager.EnumItemManager">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<!-- <bean id="operateLogUtil" class="com.sihuatech.basicdata.enums.operatelog.service.OperateLogService"> 
+		<property name="operateLogManager"> <ref bean="operateLogManager" /> </property> 
+		<property name="securityService"> <ref bean="securityService" /> </property> 
+		</bean> -->
+
+	<bean id="enumerationService"
+		class="com.sihuatech.basicdata.enums.enums.service.EnumerationService">
+		<property name="enumerationManager">
+			<ref local="enumerationManager" />
+		</property>
+		<property name="enumItemManager">
+			<ref local="enumItemManager" />
+		</property>
+		<property name="enumerationHolder">
+			<ref local="enumerationHolder" />
+		</property>
+
+	</bean>
+	<bean id="enumItemService"
+		class="com.sihuatech.basicdata.enums.enums.service.EnumItemService">
+		<property name="enumerationManager">
+			<ref local="enumerationManager" />
+		</property>
+		<property name="enumItemManager">
+			<ref local="enumItemManager" />
+		</property>
+		<property name="enumerationHolder">
+			<ref local="enumerationHolder" />
+		</property>
+		<property name="interfaceConfigManager">
+			<ref bean="com.sihuatech.interfaceConfigManager" />
+		</property>
+	</bean>
+	<!-- enums缓存处理 -->
+	<bean id="enumerationHolder"
+		class="com.sihuatech.basicdata.enums.enums.holder.EnumerationHolder">
+		<property name="enumerationManager">
+			<ref local="enumerationManager" />
+		</property>
+		<property name="enumItemManager">
+			<ref local="enumItemManager" />
+		</property>
+	</bean>
+
+
+	<!-- 配置项缓存处理 -->
+	<bean id="systemConfigHolder"
+		class="com.sihuatech.basicdata.enums.systemconfig.holder.SystemConfigHolder">
+	</bean>
+
+	<!-- 配置项服务类 处理页面CRUD -->
+	<bean id="systemConfigService"
+		class="com.sihuatech.basicdata.enums.systemconfig.service.SystemConfigService">
+		<property name="systemConfigManager">
+			<ref local="systemConfigManager" />
+		</property>
+		<property name="systemConfigHolder">
+			<ref local="systemConfigHolder" />
+		</property>
+	</bean>
+
+	<!-- 配置项管理类 -->
+	<bean id="systemConfigManager"
+		class="com.sihuatech.basicdata.enums.systemconfig.manager.SystemConfigManager">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+</beans>

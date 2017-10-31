@@ -1,0 +1,84 @@
+<!-- @meta title="接口配置"  unique="true" icon="images/icons/portal_server_main.png" -->
+<div id="seniorSearch" title="接口配置" style="margin-left:10px;margin-right:10px" >
+<form id="superSearchForm"  style="margin:4px 5px" >
+<fieldset data-fieldset="column:2">  
+  <label>接口类型</label>
+  <select id="type" name="type" data-select="resource:lookup/interfaceVarityEnum"><option value="ALLTYPE">全部</option></select>
+  <label>所属地市：</label>
+  <select id="cityCode" name="cityCode" data-select="resource:lookup/cityCode" disabled="disabled" ><option value="ALLCITYCODE">全部</option></select>
+  </fieldset>
+  <input type="submit" value="查询" class="w-form-query" />    
+  <input type="submit" value="重置" class="w-form-clear" id="clear"/>
+  </form>  
+  </div>   
+  <div id="supersearch" class="w-grid" style="margin-top:10px" >
+  <button title="新建" id="add" data-href="open('pages/interfacemanage/interfaceconfigureadd')"><img title="新建" src="images/icons/add.png"/></button>
+  <button title="删除"  data-href="push(W.$('supersearch').selected_rows('id')) -> ids|assert(ids.length) -> confirm('是否删除 ' + ids.length + ' 条记录？') -> call(del, ids)"><img title="删除" src="images/icons/delect-01.png"/></button>	
+  <button title="刷新" id="refreshbutton" ><img title="刷新" src="images/icons/refresh-01.png"/></button>
+  <table style="width:100%">
+        <thead>
+            <tr>
+                   <th class="w-grid-select" width="10%"></th>
+				   <th width="30%">接口名称</th>
+				   <th width="30%">接口代码</th>	
+				   <th width="30%">接口类型</th>			
+				   <th width="30%">所属城市</th>			
+            </tr> 
+        </thead> 
+        <tbody> 
+            <tr>
+              	<td><input name="id" type="hidden"/>             
+				<td><a name="name" data-href="popup('pages/interfacemanage/interfaceconfigureadd',C('parent.id'))"/></td>
+                <td name="code"></td>
+                <td name="type" data-enum-lookup="lookup/interfaceVarityEnum"></td>
+                <td name="cityCode" data-enum-lookup="lookup/cityCode"></td>
+            </tr> 
+        </tbody> 
+    </table>
+</div>
+<script language="javascript">
+var isPositiveNum = function(s){//是否为正整数  
+    var re = /^[0-9]*[1-9][0-9]*$/ ;  
+    return re.test(s)  
+} 
+ //获取
+ W.$('superSearchForm').query();
+W.$('supersearch').on('grid:refresh', function(e, query_data, paginator) {
+	if(!isPositiveNum(paginator.pageSize)){
+		paginator.pageSize = 10;
+	}
+	W.get('interfaceConfigManageService?' + W.to_query_string(query_data) + '&pageBean=' + paginator).done(function(data) {
+		W.$('supersearch').data(data);
+	});
+}); 
+
+//删除
+var del = function(ids){
+	W.remove('interfaceConfigManageService', ids).done(function(callBackValue){
+		W.alert(callBackValue);
+	});
+}
+
+W.on(['interfaceConfigManageService:create', 'interfaceConfigManageService:update', 'interfaceConfigManageService:remove'], 'public',function() {
+	W.$('supersearch').refresh();
+}); 
+
+//根据cityCode
+W.get("ngUser/currentuser").done(function(cityCode){
+	if(cityCode==0){
+	    	W.$("cityCode").removeAttr("disabled")
+	    }else{
+				W.$("cityCode").data(cityCode);
+	    }
+}) 
+
+//刷新
+W.$('refreshbutton').on('click','private',function(e){
+	W.fire('form:query');
+});
+
+
+W.$('clear').on('click','private',function(e){	
+	W.$('searchPortalServer').data('');
+});
+</script>

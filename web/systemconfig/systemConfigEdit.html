@@ -1,0 +1,29 @@
+<#ftl>
+<!-- @meta var="id,name"  title="${id?name+' 配置信息':'新建配置项'}" icon="images/icon/icon_16_network.png" width="380" height="230"-->
+<form  id="systemConfigForm" data-form="column:2;">
+	<input type="hidden" id="id" name="id" value="${id}"/>
+	<label>属性名称</label>
+	<input id="key" name="key" type="text" class="w-required" data-colspan="2" style="width:95%;" readonly="readonly"/>
+	<label>属性值</label>
+	<input id="code" name="value" type="text" class="w-required" data-colspan="2" 
+			data-validator="message:必填且不多于64字符; pattern:^.{1,64}$" style="width:95%;" placeholder="必填且不多于64字符"/>
+	<label>描述</label>
+	<textarea id = "description" name="description" data-colspan="2" 
+			data-validator="message:不多于64字符; pattern:^.{0,64}$" style="width:95%;" placeholder="不多于64字符"></textarea>
+	<input id="readonly" name="readonly" type="hidden"/>
+    <input id="saveButton" type="submit" class="n_display" value="保存" 
+    		data-href="form.validate()->systemConfigForm|update('systemConfig', systemConfigForm)-> close()" />
+	<input type="submit" class="w-operate-query" value="返回" data-href="W.close();"/>
+</form>
+<script>
+if(id){
+	W.get('systemConfig/'+id).done(function(callBackValue){
+		$systemConfigForm.data(callBackValue);
+	});
+}
+
+var isReadOnly = W.$('readonly').attr('value');
+if(isReadOnly=='1'){
+	W.$("saveButton").add_class('w-operate-query').remove_class('n_display');
+}
+</script>

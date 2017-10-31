@@ -1,0 +1,57 @@
+<style>
+.statebar_right{ height:30px; line-height:30px; width:1280px;  margin:auto; position: relative; z-index:100; float:right;}
+.state_position{ color:#fff; }
+.statebar-menu{position: absolute; height:29px; line-height: 29px; right: 15px; z-index:10000; width:300px; top:0px; text-align: right;}
+.statebar-menu li{ height:29px; line-height: 29px; display: inline-block; cursor:pointer; margin-left:15px; opacity:0.8;}
+.statebar-menu li:hover{opacity:1; height:29px; lin-height:29px;}
+.statebar-menu li img{ width:18px; height:18px; margin-top:5px;}
+.statebar-menu li.hidden img{ visibility: hidden}
+.publish_task_msg{ width:100%;}
+.show-dtail span:hover{ background:#DCF2FF;cursor: pointer; }
+</style>
+<div class="statebar" id="statebar">
+	<div class="statebar_right">
+		<div id="stateMenu" class="statebar-menu">
+			<ul>
+			
+			</ul>
+		</div>
+	</div>
+</div>
+<script>
+	var sysId = "";
+	var taskCode ="";
+	var dataType =""; var requestType = "";
+	var stateMenu = W.$("stateMenu");
+	var job_name = "";
+	W.on("statebarMenu:add","public",function(e,menu,fn){
+		addMenu(menu,fn);
+	});
+	var addMenu = function(menu,fn){
+		var iconImg = menu.icon;
+		if(!iconImg)
+			return;
+		var title = menu.title;
+		var icon = $("<li />").html("<img src='"+iconImg+"' />");
+		if(title)
+			icon.find('img').attr("title",title);
+		stateMenu.node.find("ul").append(icon);
+		icon.height(icon.height());
+		icon.width(icon.width());
+		fn(icon);
+	}
+	W.on("statebarMenu:clear","public",function(e){
+		stateMenu.node.empty();
+	});
+	
+	//加载我的任务监控图标。
+	var publishTaskMonitorIcon = {
+			icon : "images/task.png",
+			title : "我的发布任务"
+	};
+	addMenu(publishTaskMonitorIcon,function(icon){
+		icon.click(function(){
+			W.popup("pages/publish/my_publish_task");
+		});
+	});
+</script>

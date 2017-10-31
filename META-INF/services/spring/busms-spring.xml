@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+	<bean id="areaService" class="com.sihuatech.basicdata.area.service.AreaService">
+		<property name="areaManager" ref="areaManager"></property>
+		<property name="userManager" ref="com.sihuatech.user.manager.UserManager"></property>
+		<property name="interfaceConfigManager" ref="com.sihuatech.interfaceConfigManager"></property>
+	</bean>
+	<bean id="com.sihuatech.InterfaceConfigManageService"
+		class="com.sihuatech.interfaceall.interfaceconfig.service.InterfaceConfigManageService">
+		<property name="interfaceConfigManager" ref="com.sihuatech.interfaceConfigManager"></property>
+	    <property name="dataRecordStatusManager" ref="com.sihuatech.DataRecordStatusManager"/>
+	</bean>
+	<bean id="checkService" class="com.sihuatech.interfaceall.check.service.CheckService">
+		<property name="checkManage" ref="checkManage"></property>
+		<property name="interfaceConfigManager" ref="com.sihuatech.interfaceConfigManager"></property>
+	</bean>
+    <bean id="taskService" class="com.sihuatech.task.service.TaskService">
+        <property name="schedulerManager" ref="schedulerManager"></property>   
+        <property name="taskManager"><ref bean="taskManager" /></property>
+    	<property name="taskDefManager">
+			<ref bean="taskDefManager" />
+		</property>
+		<property name="interfaceConfigManager" ref="com.sihuatech.interfaceConfigManager"></property>
+    </bean>
+    
+    <bean id="com.sihuatech.DataRecordStatusService" class="com.sihuatech.datarecordstatusservice.DataRecordStatusService">
+		<property name="dataRecordStatusManager" ref="com.sihuatech.DataRecordStatusManager"/>
+		<property name="interfaceConfigManager" ref="com.sihuatech.interfaceConfigManager"/>
+	</bean>
+	<bean id="com.sihuatech.DataRecordHistoryService" class="com.sihuatech.datarecordhistoryservice.DataRecordHistoryService">
+		<property name="dataRecordHistoryManager" ref="com.sihuatech.DataRecordHistoryManager"></property>
+	</bean>
+	<bean id="com.sihuatech.user.service.UserService" class="com.sihuatech.user.service.UserService">
+	    <property name="userManager" ref="com.sihuatech.user.manager.UserManager"/>
+	    <property name="defaultUserManager" ref="userManager" />
+	    <property name="securityService" ref="securityService" />
+	</bean>
+	
+	<bean id="com.sihuatech.user.manager.UserManager" class="com.sihuatech.user.manager.UserManager">
+	    <property name="sessionFactory" ref="sessionFactory"/>
+	</bean>	
+	<bean id="com.sihuatech.task.service.RequestCenterService" class="com.sihuatech.task.service.RequestCenterService">
+	    <property name="interfaceInfoManager" ref="com.sihuatech.InterfaceInfoManager"/>
+	    <property name="areaManager" ref="areaManager"></property>	    
+	</bean>
+</beans>

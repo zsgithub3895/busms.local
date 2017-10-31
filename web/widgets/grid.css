@@ -1,0 +1,184 @@
+/* CSS Document */
+/*Grid样式修改**/
+
+.w-grid-container table.ui-widget-content  { width: 100% }
+.w-grid-container .ui-widget-header + table.ui-widget-content { border-top: 0 }
+.w-grid-container table.ui-widget-content tr.ui-widget-header { border-top: 0 }
+
+.w-grid-action-bar { float: left }
+.w-grid-action-bar .ui-button { margin-right: 5px; cursor: pointer; position: relative }
+.w-grid-action-bar .ui-icon { position: absolute }
+
+.w-grid .w-row-with-data { font-weight: normal !important; border-bottom: 1px solid #DDDDDD; border-width: 1px 0px }
+.w-grid .w-row-with-data:nth-child(odd):not(.ui-state-highlight) { background-color: #F7F7F7 }
+.w-grid .w-row-with-data:last-child { border-bottom: 0 }
+
+.w-grid .w-row-with-data td { height: 27px }
+.w-grid .w-row-with-data td input.ui-button { padding: 1px 10px }
+
+.w-grid thead > tr { height: 28px }
+.w-grid thead th { border-right: 1px dotted #AAAAAA; padding-left: 0; padding-right: 0 }
+.w-grid thead th > div { position: relative }
+.w-grid thead th.w-sortable span.ui-icon { position: absolute; top: 0; right: 0 }
+
+.w-grid tbody.w-grid-tbody td { border-right: 1px dotted #DDDDDD }
+
+.w-grid tfoot > tr > td { border-width: 1px 0 0 !important }
+.w-grid tbody tr td:last-child{ border-width:none;}
+
+.w-grid th.w-sortable { cursor: pointer }
+.w-grid th .ui-resizable-e { cursor: col-resize }
+
+.w-grid-sort-helper {
+	background-color: #FFFFFF;
+	border: 1px solid #CCCCCC;
+	padding: 4px 5px;
+	border-radius: 3px;
+}
+
+.w-grid .ui-widget-content{ border:none !important;}
+.w-grid tfoot{ background:url("../images/new/toolbar_bg.png") repeat-x;  height:30px; line-height: 30px; border:none; vertical-align: middle;}
+.w-grid tfoot td{ background:none !important; border:none !important;}
+.w-grid-action-bar{ height:34px; line-height:34px; }
+.w-grid-action-bar button{ border:none; background:none; box-shadow:none !important; opacity:0.7; vertical-align:middle; height:26px; width:26px; margin-top:1px;}
+.w-grid-action-bar button{ cursor:pointer; border:none !important; background:none !important; box-shadow:none !important;}
+.w-grid-action-bar button button-text{ padding:5px !important;}
+.w-grid-action-bar button:hover{ opacity:1;}
+
+.w-grid tfoot table{ margin:0 0;}
+
+.w-grid .w-grid-toolbar td{ padding:0; overflow:visible;}
+.w-grid .w-grid-toolbar a{ color:#fff; text-decoration:none;}
+.w-grid thead{ height:32px; line-height:32px;}
+.w-grid .ui-grid-header{ background: url("../images/new/grid-head.png"); border:none; border-bottom:1px solid #c1c8d2; }
+.w-grid .ui-grid-header th,.w-grid .ui-grid-header th{ border-left:1px solid #c1c8d2;font-weight:normal;}
+.w-grid .ui-grid-header th:first-child,.w-grid .ui-grid-header td:first-child{ border-left:none; }
+
+.w-grid tbody.w-grid-tbody td {border-right: none;}
+.w-grid tbody.w-grid-tbody td:not(:first-child){border-left:1px dotted #DDDDDD}
+.w-grid .w-grid-tbody .w-grid-row{ background:#fff;height: 20px; line-height:20px;}
+.w-grid .w-grid-row:last-child{ border-bottom:1px solid #ddd;}
+.w-grid .w-grid-tbody .w-grid-row.ui-state-highlight{ background:#99ffff;}
+.w-grid .w-grid-row:nth-child(2n+1):not(.ui-state-highlight) {background-color: #f0f2f5;}
+
+.w-grid tbody.w-grid-tbody tr { border:1px solid #ddd; border-right:none; border-left:none;}
+
+.w-paginator-area{ padding-right:10px;}
+.w-paginator-pages{ padding:5px; padding-top:7px; padding-bottom:0px;   height:30px; }
+.w-paginator-pages li{ float:left; height:22px; line-height:22px; padding:0 2px;  cursor:pointer; margin:0 2px; opacity:0.8;}
+.w-paginator-pages li:not(.w-paginator-move-btn):not(.w-paginator-pages-more):hover{ background:#daebf9;  color:#005cc7; opacity:0.9;}
+.w-paginator-move-btn img{ margin-top:4px;}
+.w-paginator-pages li.w-paginator-pages-current{ background:#daebf9;  color:#005cc7; opacity:1;}
+
+.w-paginator{ color:#fff; float:right; margin:0;}
+.w-paginator-pages-more{ cursor:default;}
+.w-grid-toolbar-split{ width:2px; height:18px; line-height:18px; background:url(../images/new/grid-actionbar-splitline.png);margin:0 5px;}
+.w-paginator-item { display:inline-block; vertical-align:middle;}
+.w-paginator-pagesize{ padding:0 5px; height:29px; line-height:29px;}
+.w-paginator-pagesize input{ width:30px; height:17px; line-height:17px; text-align:left; padding:0 1px; vertical-align: middle; margin-top:-2px;}
+.w-paginator-current-item{ height:29px; line-height:29px;}
+.w-paginator-pre-next{ display:inline-block; width:50px; height:20px; vertical-align:middle; background:url(../images/new/arrleft.png); margin-left:5px;}
+.w-paginator-pre-next li{  width:25px; height:20px; line-height:20px; float:left; display:block; cursor:pointer; }
+.w-paginator-pre-next li:hover{ background:url(../images/new/arrleft-hover.png);}
+.w-paginator-pre-next li.pre-btn{ margin-right:1px;}
+.w-paginator-pre-next li.next-btn{ background-position:right; width:24px;}
+
+.w-paginator-down{ display:inline-block; background:url(../images/new/w-paginator-downarrow.png) no-repeat right center; vertical-align:middle; padding-right:10px; height:16px; line-height:16px;}
+.w-paginator-pagesize-show{ position:relative; cursor:pointer;}
+.w-paginator-pagesize-show:hover .w-paginator-pagesize-list{ display:block;}
+.w-paginator-pagesize-list{ display:none; position:absolute; top:15px; left:-10px; width:70px; background:#2777D0; border:1px solid #fff; box-shadow: 1px 1px 3px #333333;}
+.w-paginator-pagesize-list li{ height:16px; line-height:16px; text-align:left; padding:0 5px;}
+.w-paginator-pagesize-list li input{ height:14px; line-height:14px; padding:0 2px;}
+
+.w-grid thead tr { border-bottom: 1px solid #CCCCCC; height: 28px;line-height: 22px}
+.w-grid thead th { border-right: 1px dotted #AAAAAA; padding-left: 0; padding-right: 0 }
+.w-grid thead th:last-child { border-right: 0 }
+.w-grid thead th > div { position: relative ;height: 20px; overflow:hidden; text-overflow: ellipsis;}
+.w-grid thead th.w-sortable span.ui-icon { position: absolute; top: 0; right: 0 }
+
+.w-grid th.w-sortable { cursor: pointer }
+.w-grid th .ui-resizable-e { cursor: col-resize }
+
+.w-grid .dthead table{border-top:0;border-right:0}
+.w-grid .dtbody table{border-top:0;border-right:0}
+.w_grid .dthead{float:left;}
+.w-grid .dtbody{float:left;position: absolute;}
+
+.w-grid .w-grid-drag{width:30px}
+.w-grid .w-drag-handle{cursor: move;}
+.w-grid .w-drag-handle span{margin-left:4px; opacity:0.7; -moz-transform:rotate(-90deg); -webkit-transform:rotate(-90deg)}
+.w-grid .in-drag{opacity:0.4}
+.w-grid tbody td { overflow:hidden ;text-overflow: ellipsis; -moz-white-space: nowrap; !important;}
+
+.w-treegrid .w-grid-row { font-weight: normal !important; border-bottom: 1px solid #DDDDDD; border-width: 0px 0px 1px 0px }
+.w-treegrid .w-grid-row:nth-child(odd):not(.ui-state-highlight) { background-color: #fafcff }
+.w-treegrid .w-grid-row.ui-state-highlight { background-color: #FFFFCB !important; }
+
+.w-treegrid .w-grid-row td{
+	border-right: 1px dotted #DDDDDD;
+	height: 27px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	
+}
+.w-treegrid .w-grid-row td:hover {
+	overflow: visible;
+	text-overflow: inherit;
+}
+.w-treegrid .w-grid-row td input.ui-button{ padding: 1px 10px }
+.w-treegrid .w-grid-row td:last-child{ border-right: 0 }
+
+.w-treegrid .w-grid-row.ui-state-highlight td {
+	text-overflow: inherit;
+    white-space: inherit;
+    word-wrap: break-word;
+}
+.w-treegrid thead tr { border-bottom: 1px solid #CCCCCC; height: 28px;line-height: 22px}
+.w-treegrid thead th{ border-right: 1px dotted #AAAAAA; padding-left: 0; padding-right: 0 }
+.w-treegrid thead th:last-child { border-right: 0 }
+.w-treegrid thead th > div{ position: relative ;height: 20px; overflow:hidden; text-overflow: ellipsis;}
+.w-treegrid thead th.w-sortable span.ui-icon { position: absolute; top: 0; right: 0 }
+
+.w-treegrid th.w-sortable  { cursor: pointer }
+.w-treegrid th .ui-resizable-e{ cursor: col-resize }
+
+.w-treegrid .dthead table{border-top:0;border-right:0}
+.w-treegrid .dtbody table{border-top:0;border-right:0}
+.w-treegrid .dtbody{float:left;position: absolute;}
+
+.w-treegrid .w-grid-drag{width:30px}
+.w-treegrid .w-drag-handle{cursor: move;}
+.w-treegrid .w-drag-handle span{margin-left:4px; opacity:0.7; -moz-transform:rotate(-90deg); -webkit-transform:rotate(-90deg)}
+.w-treegrid .in-drag{opacity:0.4}
+
+.w-treegrid .tree-line-vertical{height:26px;margin-top:-3px; width:15px; border-left: 1px dotted #000;margin-left:4px; float:left;}
+.w-treegrid .tree-line-vertical-half{width:4px;}
+.w-treegrid .tree-line-horizotal{height:14px; width:8px; border-bottom: 1px dotted #000;float:left}
+.w-treegrid .tree-icon{float:left; margin-top:4px;margin-right: 2px}
+.w-treegrid .tree-title{float:left; margin-top:4px;}
+.w-treegrid .tree-click{float:left; margin-left: -11px; margin-top:4px;}
+.w-treegrid .tree-bg{background:url("../images/icon/icons.png") no-repeat;}
+.w-treegrid .default-icon{background-position: -0px -0px;}
+.w-treegrid .open{background-position: -32px -48px;}
+.w-treegrid .close{background-position: -48px -32px;}
+
+.w-treegrid-sort-helper{
+	background-color: #FFFFFF;
+	border: 1px solid #CCCCCC;
+	padding: 4px 5px;
+	border-radius: 3px;
+}
+
+.w-treegrid .ui-grid-toolkit {
+	height: 28px;
+	padding: 2px;
+}
+.ui-icon-tarSystem {background-image: url(../images/icons/targetsystem.png) !important; }
+.tableTd {display: block; float:left; clear:both; padding:0px; margin:0px;text-align: left;}
+.w-treegrid .ui-grid-toolkit {
+   background: url("../images/new/grid-actionbar-bg.png") repeat scroll 0 0 transparent;
+    color: #FFFFFF;
+    height: 27px;
+    line-height: 27px;
+}
+.w-grid table{table-layout:fixed;}

@@ -1,0 +1,81 @@
+<#ftl>
+<style>
+.arrow_down_style2{background-image:url("images/new/arr_tool.png"); background-repeat:no-repeat ; width: 8px; display:inline-block; height:4px; background-position:center; margin-left:3px;}
+.toolbar{clear:both; border-left:none; border-right:none; background:url(images/new/toolbar_bg.png) repeat-x; position:relative; height:30px; padding-top:1px; }
+.view_selector1{ width:137px; height:25px; line-height:25px; padding-top:6px;  background:url(images/new/view_selector_bg.png); position:absolute; right:0px; top:0px; font-size:14px; font-weight:bold; color:#333;cursor:pointer; text-align:right; padding-right:10px;}
+.view_selector{ width:137px; height:25px; line-height:25px; padding-top:2px; position:absolute; right:0px; top:0px; font-size:14px; font-weight:bold; color:#333;cursor:pointer; text-align:right; padding-right:3px;}
+.toolbar_menu_list{padding-left:205px;}
+.toolbar_menu_list>ul{ padding-top:3px; padding-left:30px;}
+.toolbar_menu_list ul li{ position:relative;  }
+.toolbar_menu_list ul li.auto:hover .menu_list_panel,.toolbar_menu_list ul li.hover .menu_list_panel{ display:block;}
+
+.toolbar_menu_list>ul>li{ height:16px; float:left; line-height:22px; padding:3px 5px; cursor:pointer;margin-right:15px;}
+
+.toolbar_menu_list>ul>div.group_split{ height:29px; width:2px; background:url(images/new/menu_group_split_line.png); float:left; margin:10px; margin-top:-3px;  margin-bottom:0px;}
+
+.toolbar_menu_list>ul>li span.arrow_down_style2{ height:16px;}
+.toolbar_menu_list>ul>li:hover{ border:1px solid #94c0f2; box-shadow:0px 0px 2px #c3dbf5; -webkit-border-radius: 3px/*{cornerRadius}*/; border-radius: 3px/*{cornerRadius}*/; padding:2px 4px;}
+.toolbar_menu_list>ul>li:active{ box-shadow:inset 0px 0px 5px #b2d2f4;}
+.toolbar_menu_list>ul>li:hover .menu_list_panel{top:21px; left:0px;}
+
+.menu_list_panel{ border:1px solid #666666; box-shadow:0px 0px 2px #666; width:172px; padding:3px 2px; background:#fff url(images/new/menu_panel_bg.png) repeat-y; -webkit-border-radius: 4px/*{cornerRadius}*/; border-radius: 4px/*{cornerRadius}*/; display:none; position:absolute; z-index:1000;}
+.menu_list_panel li{ height:22px; line-height:22px; cursor:pointer; margin:2px 0;}
+.menu_list_panel li a{text-decoration: none; color:inherit;}
+.menu_list_panel li:hover{ background:url(images/new/downmenu_bg.png); color:#fff;}
+.menu_list_panel .group_split{height:1px !important; line-height:1px !important; background:#b5bcc7;}
+.menu_list_panel li .menu_icon{ display:inline-block; padding:1px 8px 2px 5px; width:16px; height:16px; vertical-align:middle;}
+.view_menu a{ text-decoration: none; color:inherit;}
+</style>
+<div class="toolbar">
+	<div class="toolbar_menu_list w-toolbar" id="toolbarMenulist">    	
+    	<ul>
+        	<li data-href="W.fire('showView',1)" id="showView1"><span>内容管理</span></li>
+        	<li data-href="W.fire('showView',2)" id="showView2"><span>栏目管理</span></li>
+        	<li data-href="W.fire('showView',3)" id="showView3"><span>模板管理</span></li>
+        	<li data-href="W.fire('showView',4)" id="showView4"><span>系统管理</span></li>
+        	<li data-href="W.fire('showView',5)" id="showView5"><span>基础数据管理</span></li>
+        </ul>
+    </div>
+</div>
+
+<script>
+W.on("showView","private",function(e,view){
+	var page ;
+	switch(view){
+	case 1 :
+		W.open('layouts/1-2',{left:'pages/content/content_tree_view',center:'pages/layouts/blank'});
+		page = 1;
+		W.showToolbar(1);
+		break;
+	case 2 :
+		W.open('layouts/1-2',{left:'pages/page/page',center:'pages/layouts/blank'});
+		page = 2;
+		W.showToolbar(1);
+		break;
+	case 3 :
+		W.open('layouts/1-1',{center:'pages/templatemgmt/template_main'});
+		page = 3;
+		//W.showToolbar(1);
+		break;
+	case 4 :
+		W.open('layouts/1-2',{left:'system_manage/system-manage-nav',center:'layouts/tabs'});
+		page = 4;
+		W.showToolbar(1);
+		break;
+	case 5 :
+		W.open('layouts/1-2',{left:'pages/layouts/business-setting.left',center:'layouts/tabs'});
+		page = 5;
+		W.showToolbar(1);
+		break;
+	}
+});
+
+W.showToolbar = function(state){
+	if(state==1)
+		W.$("toolbarMenulist").node.show();
+	else
+		W.$("toolbarMenulist").node.hide();
+}
+// 直接展示内容管理页面
+W.fire('showView',1);
+</script>

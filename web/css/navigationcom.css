@@ -1,0 +1,16 @@
+@charset "utf-8";
+.w1024{width:98%; height:60px; margin:0 auto;}
+.logo{ width:44px; height:44px; background:url(../images/logo-ui.png) no-repeat 0 0; float:left; margin-top:14px;}
+h2{float:left;}
+.sysName{ color:#fff; font-size:22px; line-height:60px;}
+.topmenu{ float:left; margin-left:90px;}
+.topmenu ul li{list-style:none; margin-right:10px; line-height:60px; display:inline;}
+.topmenu ul li a{ color:#fff; text-decoration:none; font-size:16px; padding:8px 12px;}
+.topmenu ul li a:hover{ background:#1abc9c; padding:8px 12px;}
+.btn-quite{ float:right; margin-left:20px; margin-top:18px;}
+.btn-quite a{ color:#ced4d8; text-decoration:none; font-size:12px;background:#566573; padding:4px 10px; display:inline-block;cursor:pointer;}
+.btn-quite a:hover{ color:#ffffff; text-decoration:none; font-size:12px;background:#1abc9c; padding:4px 10px; display:inline-block;cursor:pointer;}
+.btn-changeskin{ float:right; margin-left:20px; margin-top:18px;}
+.btn-changeskin a{ color:#bed4d8; text-decoration:none; font-size:12px;background:#766573; padding:4px 10px; display:inline-block;cursor:pointer;}
+.btn-changeskin a:hover{ color:#ffffff; text-decoration:none; font-size:12px;background:#8ab10c; padding:4px 10px; display:inline-block;cursor:pointer;}
+.user{ float:right; color:#c6ccd1; font-size:12px;line-height:60px;}

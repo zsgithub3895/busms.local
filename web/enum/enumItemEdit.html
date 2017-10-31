@@ -1,0 +1,170 @@
+<#ftl>
+<!-- @meta var="enumId,enumItemId,parentid" title="枚举值编辑" icon="images/icon/icon_16_network.png" -->
+<form id="enumItemForm" data-form="column:2;" >
+	<label>名称</label>
+	<input id="value" name="name" type="text" class="w-required" data-validate-exp="not_empty+len[0,64]+not_char['!@#$%^&*(),.<>?;:[]\'{}\\/']"/>
+	<label>编码值</label>
+	<input id="code" name="code"  type="text" class="w-required" maxlength="64" data-validator="message:编号必须唯一且不能为空;method:validate_updatecode;"  placeholder="不能超过64个字符"/>
+	<label>序号</label>
+	<input id="sortIndex" name="sortIndex" type="text" class="w-required" data-validator="message:必填且数字不能超过8位数; pattern:^\d{1,8}$" placeholder="必填且数字不能超过8位数"/>
+	<label>说明</label>
+	<textarea name="description" id="description" data-validator="message:不多于64字符; pattern:^.{0,64}$" placeholder="不多于64字符"></textarea>
+	<input type="hidden" name="id" id="id"  />
+	<input type="hidden" name="parentid" id="parentid"  />
+	<input type="hidden" name="enumId" id="enumId"  />
+	<input type="hidden" name="status"/>
+	<input type="hidden" name="readonly" id="readonly"/>
+	<input id="readOnlySearchButton" class="w-operate-query" style="display:none;" type="submit" value="新建" data-href="form.validate()->enumForm|call(saveHandler,enumForm)"/>
+    <input id="readOnlyClearButton" class="w-operate-query" type="submit" value="返回"  data-href="W.open('enum/enumEdit',enumId);"/>
+</form>
+<div id="subItemEnumDiv" data-grid="title:子枚举值" style="display:none;" class="w-grid" >
+<button title="新建" data-href="call(addSubEnumHandler)" ><img src="images/icons/add.png"></button>
+<button title="删除" data-href="push(W.$('subItemEnumDiv').selected_rows('id')) ->
+ ids|assert(ids.length,'至少选择一条记录！') -> confirm('是否删除 ' + ids.length + ' 条记录？')->
+ remove('enumItem/'+enumId,ids)->W.fire('subItemEnumDiv:refresh')"><img src="images/icons/delect-01.png"></button>
+<table style="width:100%">
+<thead>
+  <tr>
+  	<th width="4%" class="w-grid-select"></th>
+  	<th width="4%" class="w-grid-index">序号</th>
+  	<th width="25%">名称</th>
+  	<th width="25%">值</th>
+  	<th width="15%">状态</th>
+  	<th width="10%">是否只读</th>
+  	<th width="18%">备注</th>
+  </tr>
+</thead>
+<tbody>
+  <tr class="w-row">
+  	<td><input name="id" type="hidden" /></td>
+  	<td></td>
+  	<td><a name="name" data-href="call(editEnumHandler, row.data().id)" /></td>
+    <td name="code"></td>
+    <td name="status" data-enum="1:正常;2:暂停;3:停止"></td>
+    <td name="readonly" data-enum="1:否;2:是"></td>
+    <td name="description"></td>
+  </tr>
+</tbody>
+</table>
+</div>
+<script>
+var backToBefore = function(){
+	var tmpParentId = W.$('parentid').data();
+	if(tmpParentId=='0'||!parentid){
+		W.open('enum/enumEdit',enumId);
+	}else{
+		W.open('enum/enumItemEdit',enumId,parentid,parentid);
+	}
+}
+ var validate_isonly = function(value,continuation){
+	if(value.length>10){
+		return false;
+	}else if(value){
+		W.get('enumItem/enumItem/enumItemId/isExit/parentId/this?code='+value+'&enumId='+enumId+'&parentId='+parentid+'&id='+enumItemId).done(function(result) { continuation(result); }); 
+	}else{
+		return false;
+	}
+}
+//检测名称唯一性
+var validate_name_isonly = function(value,continuation){
+	if(value.length>64){
+		return false;
+	}else if(value){
+		W.get('enumItem/enumItem/enumItemId/isExit/parentId/name/this?name='+value+'&enumId='+enumId+'&id='+enumItemId).done(function(result) { continuation(result); }); 
+	}else{
+		return false;
+	}
+} 
+
+var saveHandler=function(enumForm){
+	if(enumItemId){
+		W.update('enumItem/'+enumItemId,enumForm).done(function(callBackValue){
+			W.alert('更新成功');
+			W.fire('subEnumDiv:refresh');
+			if(parentid){
+				W.open('enum/enumItemEdit',enumId,parentid,parentid);
+			}else{
+				//W.open('enum/enumEdit',enumId);
+				W.close();
+			}
+		});
+	}else{
+		if(parentid){
+			W.create('enumItem/'+enumId+'/'+parentid,enumForm).done(function(callBackValue){
+				if(callBackValue==0){
+					alert('创建失败');
+				}else{
+					W.$('id').data(callBackValue);
+					W.$('subEnumDiv').show();
+					W.alert('新建成功');
+					W.fire('subEnumDiv:refresh');
+				}
+				W.open('enum/enumItemEdit',enumId,parentid,parentid);
+			});
+		}else{
+			W.create('enumItem/'+enumId,enumForm).done(function(callBackValue){
+				if(callBackValue==0){
+					alert('创建失败');
+				}else{
+					W.$('id').data(callBackValue);
+					W.$('subEnumDiv').show();
+					W.alert('新建成功');
+					W.fire('subEnumDiv:refresh');
+				}
+				W.open('enum/enumEdit',enumId);
+				W.close()
+			});
+		}
+	}
+	//W.fire('subItemEnumDiv:refresh');
+}
+var addSubEnumHandler=function(){
+	W.open('enum/enumItemEdit',enumId,undefined,enumItemId);
+}
+var editEnumHandler=function(realId){
+	W.open('enum/enumItemEdit',enumId,realId,parentid);
+}
+
+var init=function(){
+		if(W.$('readonly').data()!=2){
+			W.$('readOnlySearchButton').node.show();
+		
+			if(W.$('parentid').data()=='0'&&enumItemId){
+				W.$('subItemEnumDiv').node.show();
+				W.fire('subItemEnumDiv:refresh');
+			}
+		}
+}
+
+if(enumItemId){
+	W.get('enumItem/'+enumItemId).done(function(message) {
+		W.$('enumItemForm').data(message);
+		init();
+	});
+}else{
+	init();
+	$("input[name='code']").removeAttr('readonly')
+	$("input[name='code']").removeAttr('disabled');
+}
+W.on('subItemEnumDiv:refresh','public',function(){
+	W.get('enumItem/parentId/'+enumItemId).done(function(data){
+			if(null!=data){
+				W.$('subItemEnumDiv').data(W.paginate(data));
+			}else{
+				W.$('subItemEnumDiv').data(W.paginate([]));
+			}
+
+	});
+});
+
+var validate_updatecode = function(value,continuation){
+	W.get('enumItem/checkcode?code='+encodeURIComponent(value)).done(function(result) {
+		if(result){
+			continuation(result);
+			}
+		else{
+			continuation("CODE编码必须唯一且不能为空");
+			} 
+		}); 
+	}
+</script>

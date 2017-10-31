@@ -1,0 +1,26 @@
+@charset "utf-8";
+/* CSS Document */
+
+.ui-widget-upload{ position:relative;}
+.ui-widget-upload .upload-btn{ border:1px solid #f6f6f6; border-radius:4px; color:#0b4077; background:url(images/upload_btn_bg.png); padding:1px 8px; height:20px; line-height:20px; display:inline-block; position:relative; overflow:hidden; vertical-align:middle;}
+.ui-widget-upload .upload-btn span{ background:url(images/arr_upload.png) no-repeat; padding-left:17px;}
+.ui-widget-upload .upload-btn input[type='file']{ opacity:0; cursor:pointer; position:absolute; top:-100px; right:-50px; font-size:640px;}
+.upload-list{ display:inline-block; margin-left:2px; height:9px; width:9px; padding:6px 2px; border:1px solid #cbcbcb; border-radius:3px; background:url(images/upload_list_btn_normal_bg.jpg); position:relative; vertical-align:middle;}
+.upload-list .list-btn{ }
+.upload-list .list-btn span{ background:url(images/arr_down_gray.png); display:block; height:9px; width:9px; cursor:pointer;}
+.upload-list.active{ border-color:#7fb1e3; background:url(images/upload_list_btn_active_bg.jpg);}
+.upload-list.active .list-btn span{  background:url(images/arr_down.png);}
+.upload-list .file-list{ width:205px; padding:2px; position:absolute; top:30px; left:-90px; background:#fff; border:1px solid #bacdf2; border-radius:4px; box-shadow:1px 1px 3px #aaa; display:none;}
+.upload-list .file-list li{ height:23px; line-height:23px; padding:0 5px; position:relative;}
+.upload-list .file-list .pointer{ background:url(images/pointer-top.png); width:14px; height:7px; display:block; position:absolute; top:-7px; left:88px;}
+.upload-list .file-list li:hover{ box-shadow:0px 0px 2px #aaa;}
+.upload-list .file-list li .delete{ color:#f00; font-weight:bold; font-size:14px; float:right; cursor:pointer;}
+.upload-list .file-list li:nth-child(2n+1){ background:#e3f0fa;}
+.upload-list .file-list li span{ position:relative; z-index:1;}
+.upload-list .file-list li .progress-bar{ position:absolute; left:1px; bottom:1px; right:1px; top:1px; z-index:0;}
+.upload-list .file-list li .progress-bar div{ height:100%; background:#95c9f5;}
+.holder-area{ width:190px; height:40px; position:absolute; top:0px; left:0px;}
+
+.upload-list .file-list li ~ span {width:150px; }
+.upload-list .file-list li .progress-bar ~ span {width:10px !important;}
+

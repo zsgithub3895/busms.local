@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.onewaveinc</groupId>
+	<artifactId>mrc-webapp</artifactId>
+	<packaging>war</packaging>
+	<version>1.0.1</version>
+	<name>Module Runtime Context for Web Application</name>
+	<url>http://www.sihuatech.com</url>
+	
+	<distributionManagement>
+		<repository>
+			<id>releases</id>
+			<url>${repository.releases.url}</url>
+		</repository>
+		<snapshotRepository>
+			<id>snapshots</id>
+			<url>${repository.snapshots.url}</url>
+		</snapshotRepository>
+	</distributionManagement>
+	
+	<profiles>
+		<profile>
+			<id>default</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-compiler-plugin</artifactId>
+						<version>2.5.1</version>
+						<configuration>
+							<source>1.5</source>
+							<target>1.5</target>
+							<encoding>UTF-8</encoding>
+						</configuration>
+					</plugin>
+				
+					<plugin>
+						<artifactId>maven-war-plugin</artifactId>
+						<version>2.3</version>
+						<configuration>
+							<webResources>
+								<resource>
+									<directory>target/classes</directory>
+								</resource>
+							</webResources>
+							<archive>
+								<manifest>
+									<mainClass>main.Main</mainClass>
+								</manifest>
+							</archive>
+						</configuration>
+					</plugin>
+					
+					<!-- Bug in maven-install-plugin. See http://jira.codehaus.org/browse/MINSTALL-40 -->
+					<plugin>
+						<artifactId>maven-install-plugin</artifactId>
+						<version>2.3</version>
+					</plugin>
+					
+					<!-- Bug similar to maven-install-plugin -->
+					<plugin>
+						<artifactId>maven-deploy-plugin</artifactId>
+						<version>2.5</version>
+					</plugin>
+				</plugins>
+			</build>
+			<dependencies>
+				<dependency>
+					<groupId>com.onewaveinc</groupId>
+					<artifactId>mrc</artifactId>
+					<version>${project.version}</version>
+				</dependency>
+
+				<dependency>
+					<groupId>com.onewaveinc</groupId>
+					<artifactId>mrc</artifactId>
+					<classifier>sources</classifier>
+					<version>${project.version}</version>
+				</dependency>
+
+				<!-- 
+				<dependency>
+					<groupId>com.onewaveinc</groupId>
+					<artifactId>mrc</artifactId>
+					<classifier>javadoc</classifier>
+					<version>${project.version}</version>
+				</dependency>
+				-->
+			</dependencies>
+		</profile>
+	</profiles>
+</project>

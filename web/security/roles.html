@@ -1,0 +1,72 @@
+<!-- @meta title="角色" icon="images/icon/icon_16_computer.png" -->
+<form id="searchForm" data-form="column:2;">
+	<label>角色名</label>
+	<input name="searchName" type="text" data-validate-exp="not_char['!@#$%^&*(),.<>?;:[]{}\'/+-_']"/>
+	<input type="submit" value="查询" class="w-form-query" />
+	<input type="submit" value="清空" class="w-form-clear" />	
+</form>
+<div id="roles" class="w-grid">
+	<button id="create" data-href="open('security/role')" title="新建"><img src="images/icons/add.png"></button>
+	<button title="刷新" id="refreshbutton" ><img title="刷新" src="images/icons/refresh-01.png"/></button>
+	<table style="width:100%;table-layout:fixed">
+		<thead>
+			<tr>
+				<th  width="5%" class="w-grid-index">序号</th>
+				<th width="47%">角色</th>
+				<th width="48%">创建时间</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr class="w-row">
+				<td></td>
+				<td><input name="id" type="hidden" /><a name="name" data-href="open('security/role', row.data().id)"></a></td>
+				<td name="createTime"></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<script>
+W.fire('form:qeury');
+W.on('form:qeury','private',function(e){
+	  isRefreshByHand = true ;
+	  W.$('searchForm').form.query();
+});
+function checkStr(str){
+    var SpecialCharacters = "'!@#$%^&*(),.<>?;:[]{}\'/+-_'";
+    for(var i=0;i<SpecialCharacters.length-1;i++){
+        if(str.indexOf(SpecialCharacters[i]) != -1){
+            return true;
+        }
+    }
+    return false;
+}
+var isPositiveNum = function(s){
+	  var re = /^[0-9]*[1-9][0-9]*$/ ;  
+	  return re.test(s)  
+	}
+//刷新
+W.$('refreshbutton').on('click','private',function(e){
+	W.fire('form:qeury');
+});
+W.$('roles').on('grid:refresh', function(e, query_data, paginator) {
+	var W = this;	
+	var name =query_data.searchName;
+	if(!isPositiveNum(paginator.pageSize)){
+		paginator.pageSize = 10;
+	}
+	if(name && checkStr(name)){
+		W.alert("名称不能包含非法字符！");
+		return;
+	}else{
+		W.get('roles/' + query_data.searchName + '?' + paginator).done(function(roles) {
+			W.data(roles);
+		});
+	}
+	
+});
+W.on(['role:create', /role\/\d+:update/, /role\/\d+:remove/], 'public', function() {
+	W.$('roles').refresh();
+});
+
+
+</script>

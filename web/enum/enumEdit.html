@@ -1,0 +1,175 @@
+<#ftl>
+<!-- @meta var="id" title="${id?'枚举值列表':'添加枚举'}" icon="images/icon/icon_16_network.png"-->
+<form id="searchForm" data-form="column:1;">
+	<input type="hidden" name="id" id="id"  />
+	<label>名称</label>
+	<input id="name" name="name" type="text" />
+	<input type="submit" class="w-form-query" value="查询" />
+    <input type="submit" class="w-operate-query" value="返回" data-href="W.open('enum/enumList');" />
+</form>
+<div id="subEnumDiv" style="display:none;" class="w-grid" >
+<button id="readOnlyAddButton" title="新建" data-href="call(addSubEnumHandler)" ><img src="images/icons/add.png"></button>
+<button id="readOnlyDeleteButton" title="删除" data-href="W.fire('enum:delete');"><img src="images/icons/delect-01.png"></button>
+<button title="刷新" id="refreshbutton" ><img title="刷新" src="images/icons/refresh-01.png"/></button>
+<table style="width:100%">
+<thead>
+  <tr>
+  	<th width="4%" class="w-grid-select"></th>
+  	<th width="4%">序号</th>
+  	<th width="30%">名称</th>
+  	<th width="25%">值</th>
+  	<th width="10%">状态</th>
+  	<th width="10%">是否只读</th>
+  	<th width="17%">备注</th>
+  </tr>
+</thead>
+<tbody>
+  <tr class="w-row">
+  	<td><input name="id" type="hidden" /></td>
+  	<td name="sortIndex"></td>
+  	<td><a name="name" data-href="call(editEnumHandler, row.data().id)" /></td>
+    <td name="code"></td>
+    <td name="status" data-enum="1:正常;2:暂停;3:停止"></td>
+    <td name="readonly" data-enum="1:否;2:是"></td>
+    <td name="description"></td>
+  </tr>
+</tbody>
+</table>
+</div>
+<script>
+
+$searchForm.attr('disabled',true);
+$searchForm.node.change(function(){
+	$searchForm.attr('disabled',false);
+});
+
+//刷新
+W.$('refreshbutton').on('click','private',function(e){
+	W.$('searchForm').form.query();
+});
+
+if(id){
+	W.get('enum/edit/'+id).done(function(enumvalue){
+		W.$('enumForm').data(enumvalue);
+		if(enumvalue.readonly == 2){
+			$value.attr('readonly',true);
+			$readonly.attr('readonly',true);
+			$description.attr('readonly',true);
+		}
+	});
+}else{
+	$code.attr('readonly',false);
+	$readonly.attr('placeholder','填2 -> 是；填1 -> 否');
+}
+var enumId;
+//var sortType = W.$('sortType').data();data-grid="title:枚举值列表" 
+var saveHandler=function(enumForm){
+	/*var codeLength = enumForm.code.length;
+	if(codeLength<enumForm.minLength||codeLength>enumForm.maxLength){
+		alert('编码长度不符');
+		return
+	}*/
+	if(id){
+		W.update('enum/'+id,enumForm).done(function(callBackValue){
+			W.alert('更新成功');
+		});
+		$save_enum.attr('disabled',true);
+	}else{
+		W.create('enum',enumForm).done(function(callBackValue){
+			if(callBackValue == 0){
+				W.alert('创建失败!');
+			}else{
+				id=callBackValue;
+				enumId=callBackValue.id;
+				$id.data(callBackValue);
+				W.$('subEnumDiv').show();
+				W.alert('枚举添加成功!\n可以添加枚举值了');
+			}
+		});
+		$save_enum.attr('disabled',true);
+	}
+}
+var addSubEnumHandler=function(){
+if(id!=undefined){
+		enumId=id;
+	}
+	W.open('enum/enumItemEdit',enumId);
+}
+var editEnumHandler=function(enumItemId){
+	if(id!=undefined){
+		enumId=id;
+	}
+	W.open('enum/update_enumEdit',enumId,enumItemId);
+}
+var init=function(){
+	if(id){
+		W.$('subEnumDiv').node.show();
+		//W.get('enum/edit/'+id).done(function(data)
+			//W.$('enumForm').data(data);
+			//alert(data);
+			if(W.$('readonly').data()==1){
+				W.$('readOnlyAddButton').node.show();
+				W.$('readOnlyDeleteButton').node.show();
+			};
+		//})
+		W.$('searchForm').form.query();
+	 }
+};
+var isPositiveNum = function(s){//是否为正整数  
+    var re = /^[0-9]*[1-9][0-9]*$/ ;  
+    return re.test(s)  
+}
+
+W.$('subEnumDiv').on('grid:refresh', function(e, query, paginator) {
+   
+	var W = this;
+	if(!isPositiveNum(paginator.pageSize)){
+		paginator.pageSize = 10;
+	}
+	
+	W.get('enumItem/enumParentId/'+id+'/'+1+'/'+0+'?'+W.param(query)).done(function(data){
+		if(null!=data){
+			W.$('subEnumDiv').data(W.paginate(data, paginator));
+		}else{
+            W.$('subEnumDiv').data(W.paginate([]));
+        }
+	});
+});
+init();
+W.on('subEnumDiv:refresh','public',function(){
+    W.get('enumItem/enumParentId/'+id+'/'+1+'/'+0).done(function(data){
+        if(null!=data){
+            W.$('subEnumDiv').data(W.paginate(data));
+        }else{
+            W.$('subEnumDiv').data(W.paginate([]));
+        }
+    });
+});
+
+////////////////////////////////////////////
+W.on('enum:delete','private',function(e){
+			var subEnumDiv = W.$('subEnumDiv').selected_rows();
+			  var ids = [];
+			  if (subEnumDiv && subEnumDiv.length > 0) {
+			    $.each(subEnumDiv,function(i,subEnum){
+			    	ids.push(subEnum.id);
+			    });
+			 
+			    W.get('enumItem/myid/'+ids+'/'+id).done(function(data){
+				      if(false==data){
+				        W.alert('该类型已存在接口配置中，不可以删除');
+				        return ;
+				      }else{
+				      W.confirm("是否确认删除这 "+ids.length+"个接口 ?").done(function(){
+					        W.remove('enumItem/'+id,ids).done(function(){
+						        W.$('searchForm').form.query();
+						        W.alert('该接口已经删除');
+					        });
+					      });
+				      }
+			    });     
+			  }else{
+			    W.alert('请至少选择一个接口进行删除');
+			  }
+});
+</script>
